@@ -689,15 +689,7 @@ function appendVerseCard(verse) {
   
   const meta = document.createElement('div');
   meta.className = 'verse-meta';
-  
-  const isStotram = (verse.hymn_id && !['tiruppallaandu', 'tiruppaavai', 'tiruppalliyezuchchi', 'amalaanadipiraan', 'kanninunshiruttaambu', 'navamanimaalai', 'adhikaarasangraham'].includes(verse.hymn_id));
-  
-  if (isStotram) {
-    meta.style.display = 'none';
-  } else {
-    const isDivya = ['tiruppallaandu', 'tiruppaavai', 'tiruppalliyezuchchi', 'amalaanadipiraan', 'kanninunshiruttaambu'].includes(verse.hymn_id);
-    meta.textContent = isDivya ? `Pāsuram ${verse.verse_number}` : `Verse ${verse.verse_number}`;
-  }
+  meta.style.display = 'none';
   cardDiv.appendChild(meta);
   
   // Show repeat icon for first and last verses (parayanam standard)
@@ -730,8 +722,8 @@ function appendVerseCard(verse) {
       
       let words = line.split(' | ');
       
-      // Inline numbering for stotrams on the last split line
-      if (isStotram && lineIdx === verse.split_lines.length - 1) {
+      // Inline numbering on the last split line
+      if (lineIdx === verse.split_lines.length - 1) {
         const lastWordIdx = words.length - 1;
         if (lastWordIdx >= 0) {
           let lastWord = words[lastWordIdx].trim();
@@ -761,8 +753,8 @@ function appendVerseCard(verse) {
     lines.forEach((line, lineIdx) => {
       let displayLine = line.trim();
       
-      // Inline numbering for stotrams on the last conjoined line
-      if (isStotram && lineIdx === lines.length - 1) {
+      // Inline numbering on the last conjoined line
+      if (lineIdx === lines.length - 1) {
         displayLine = displayLine.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
         displayLine = displayLine + `  ॥ ${verse.verse_number} ||`;
       }
