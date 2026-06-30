@@ -85,7 +85,10 @@ class handler(BaseHTTPRequestHandler):
             "nyasadasakam": "nyasadasakam",
             "nyasa": "nyasadasakam",
             "panchayudhastotram": "panchayudhastotram",
-            "panchayudha": "panchayudhastotram"
+            "panchayudha": "panchayudhastotram",
+            "saranagatigadyam": "saranagatigadyam",
+            "saranagati": "saranagatigadyam",
+            "gadyam": "saranagatigadyam"
         }
         
         target_hymn_id = None

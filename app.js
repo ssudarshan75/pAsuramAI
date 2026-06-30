@@ -536,7 +536,7 @@ function populateBrowseLists() {
   // Group other stotrams by Deity
   const narasimhaIds = ["narasimhakavacham", "mantraraajapadastotram"];
   const narasimhaStotrams = stotramGroups.filter(g => narasimhaIds.includes(g.hymn_id) && g.hymn_id !== "narasimhakavacham");
-  const desikaStotrams = stotramGroups.filter(g => ["dashaavataarastotram", "garudadandakam", "nyasadasakam", "panchayudhastotram"].includes(g.hymn_id));
+  const desikaStotrams = stotramGroups.filter(g => ["dashaavataarastotram", "garudadandakam", "nyasadasakam", "panchayudhastotram", "saranagatigadyam"].includes(g.hymn_id));
   
   if (narasimhaStotrams.length > 0) {
     const subheader = document.createElement('div');
@@ -553,8 +553,11 @@ function populateBrowseLists() {
     subheader.className = 'toc-subheader';
     subheader.textContent = '🕉️ Avatāras & Acharyas';
     mainStotramList.appendChild(subheader);
-    desikaStotrams.forEach(group => {
-      mainStotramList.appendChild(createHymnIndexItem(group, dbStotrams));
+    // Render in order
+    const orderedDesika = ["dashaavataarastotram", "garudadandakam", "nyasadasakam", "panchayudhastotram", "saranagatigadyam"];
+    orderedDesika.forEach(hid => {
+      const g = desikaStotrams.find(group => group.hymn_id === hid);
+      if (g) mainStotramList.appendChild(createHymnIndexItem(g, dbStotrams));
     });
   }
 }
