@@ -1,0 +1,18 @@
+{
+  "name": "Naalayira Divya Prabandham Learner",
+  "short_name": "Prabandham",
+  "description": "Learn, split, chant and memorize the 4000 Divya Prabandham verses.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/color/512/lotus.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

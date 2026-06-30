@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Paasuram AI</title>
+  
+  <!-- iOS web app meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Prabandham">
+  <link rel="apple-touch-icon" href="https://img.icons8.com/color/512/lotus.png">
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-content" style="justify-content: center;">
+      <span class="header-icon">🌺</span>
+      <h1>Paasuram AI</h1>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="chat-container">
+    <!-- Combined Search / Chat Bar at the top -->
+    <div class="search-header-bar">
+      <input type="text" id="chat-input" placeholder="Search hymns, Ālzhvārs, themes, or ask AI..." autocomplete="off">
+      <button id="chat-send-btn">Ask AI</button>
+    </div>
+
+    <div class="main-content-flow">
+      <!-- Table of Contents Section (Default View) -->
+      <div id="toc-container" class="toc-container hidden">
+        <h2 class="section-title">Table of Contents</h2>
+        
+        <div class="category-section">
+          <h3 class="category-title">Divya Prabandham</h3>
+          <div class="hymn-list-container" id="main-divya-list">
+            <!-- Loaded dynamically from local database -->
+          </div>
+        </div>
+        
+        <div class="category-section" style="margin-top: 24px;">
+          <h3 class="category-title">Vaishnava Stotrams</h3>
+          <div class="hymn-list-container" id="main-stotram-list">
+            <!-- Loaded dynamically from local database -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Favorites Section (Hidden by default) -->
+      <div id="favorites-container" class="toc-container hidden">
+        <h2 class="section-title">Favorites</h2>
+        <div id="favorites-empty-msg" style="text-align: center; color: var(--text-secondary); padding: 40px 20px; font-size: 14.5px; line-height: 1.6;">
+          <span style="font-size: 32px; display: block; margin-bottom: 12px;">❤️</span>
+          No favorites added yet.<br>Open a hymn and tap the star icon at the top to add it here.
+        </div>
+        <div class="hymn-list-container" id="favorites-list">
+          <!-- Loaded dynamically from favorites -->
+        </div>
+      </div>
+
+      <!-- Settings Section (Hidden by default) -->
+      <div id="settings-container" class="toc-container hidden">
+        <h2 class="section-title">Settings</h2>
+        
+        <div class="setting-row" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <div style="padding-right: 16px;">
+            <div style="font-weight: 600; font-size: 15px; color: var(--text-primary);">Word-by-Word Split Mode</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Highlights compound words with golden dashed underlines for chanting guides.</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="settings-split-toggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        
+        <div class="setting-row" style="padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-weight: 600; font-size: 15px; color: var(--text-primary); margin-bottom: 12px;">Chanting Font Size</div>
+          <div style="display: flex; gap: 8px;">
+            <button class="font-size-btn" data-size="15px" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 10px; color: var(--text-primary); font-family: inherit; font-size: 13px; cursor: pointer; transition: 0.2s;">Small (15px)</button>
+            <button class="font-size-btn active" data-size="17.5px" style="flex: 1; padding: 10px; background: rgba(217, 167, 74, 0.1); border: 1px solid var(--accent-gold); border-radius: 10px; color: var(--accent-gold); font-family: inherit; font-size: 13px; cursor: pointer; transition: 0.2s; font-weight: 600;">Medium (17.5px)</button>
+            <button class="font-size-btn" data-size="20px" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 10px; color: var(--text-primary); font-family: inherit; font-size: 13px; cursor: pointer; transition: 0.2s;">Large (20px)</button>
+          </div>
+        </div>
+
+        <div class="setting-row" style="padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-weight: 600; font-size: 15px; color: var(--text-primary); margin-bottom: 12px;">Chanting Font Style</div>
+          <div style="display: flex; gap: 8px;">
+            <button class="font-family-btn active" data-font="'Outfit', sans-serif" style="flex: 1; padding: 10px; background: rgba(217, 167, 74, 0.1); border: 1px solid var(--accent-gold); border-radius: 10px; color: var(--accent-gold); font-family: inherit; font-size: 13px; cursor: pointer; transition: 0.2s; font-weight: 600;">Outfit</button>
+            <button class="font-family-btn" data-font="'Lora', serif" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 10px; color: var(--text-primary); font-family: 'Lora', serif; font-size: 13px; cursor: pointer; transition: 0.2s;">Lora (Serif)</button>
+            <button class="font-family-btn" data-font="system-ui, sans-serif" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 10px; color: var(--text-primary); font-family: system-ui, sans-serif; font-size: 13px; cursor: pointer; transition: 0.2s;">System</button>
+          </div>
+        </div>
+
+        <div class="setting-row" style="padding: 16px 0;">
+          <div style="font-weight: 600; font-size: 15px; color: var(--text-primary); margin-bottom: 12px;">App Theme</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+            <button class="theme-btn active" data-theme="midnight" style="padding: 12px; background: #0b0f19; border: 1px solid var(--accent-gold); border-radius: 10px; color: var(--accent-gold); font-family: inherit; font-size: 12.5px; cursor: pointer; transition: 0.2s; text-align: left; display: flex; align-items: center; gap: 8px; font-weight: 600;"><span style="width: 12px; height: 12px; border-radius: 50%; background: #d9a74a; display: inline-block;"></span>Midnight</button>
+            <button class="theme-btn" data-theme="forest" style="padding: 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 10px; color: var(--text-primary); font-family: inherit; font-size: 12.5px; cursor: pointer; transition: 0.2s; text-align: left; display: flex; align-items: center; gap: 8px;"><span style="width: 12px; height: 12px; border-radius: 50%; background: #1b4d3e; display: inline-block;"></span>Forest</button>
+            <button class="theme-btn" data-theme="charcoal" style="padding: 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 10px; color: var(--text-primary); font-family: inherit; font-size: 12.5px; cursor: pointer; transition: 0.2s; text-align: left; display: flex; align-items: center; gap: 8px;"><span style="width: 12px; height: 12px; border-radius: 50%; background: #333333; display: inline-block;"></span>Charcoal</button>
+            <button class="theme-btn" data-theme="ivory" style="padding: 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 10px; color: var(--text-primary); font-family: inherit; font-size: 12.5px; cursor: pointer; transition: 0.2s; text-align: left; display: flex; align-items: center; gap: 8px;"><span style="width: 12px; height: 12px; border-radius: 50%; background: #eeeeee; display: inline-block; border: 1px solid #cccccc;"></span>Ivory (Light)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Welcome Landing View (Shown by default) -->
+      <div id="welcome-view" class="welcome-view">
+        <div class="message bot-message" style="margin-bottom: 24px;">
+          <div class="message-content">
+            <p>Pranāmams! 🙏 I am <strong>Paasuram AI</strong>, your companion for Srivaishnava scriptures.</p>
+            <p>Search above to instantly open a hymn, or tap the floating 🌺 menu to browse categories.</p>
+          </div>
+        </div>
+
+        <!-- Recents (Last 5 Opened) Section -->
+        <div id="recents-section" class="recents-section hidden" style="margin-top: 28px;">
+          <h3 style="font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.8px; text-transform: uppercase;">Recently Opened</h3>
+          <div class="recents-list" id="recents-list" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Loaded dynamically from localStorage -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat / AI Message Thread (Hidden by default, shown on conversational query) -->
+      <div id="chat-messages" class="chat-messages hidden">
+        <!-- Message thread populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Sleek Expanding Floating Action Menu Button (Tucked away, no screen clutter) -->
+  <div class="fab-container" id="fab-container">
+    <div class="fab-options" id="fab-options">
+      <button class="fab-opt-btn" id="opt-toc" data-label="Chant">📖</button>
+      <button class="fab-opt-btn" id="opt-favs" data-label="Favorites">❤️</button>
+      <button class="fab-opt-btn" id="opt-settings" data-label="Settings">⚙️</button>
+    </div>
+    <button class="fab-btn" id="fab-trigger">🌺</button>
+  </div>
+
+  <!-- Reader Panel Overlay (Slides up when verses are loaded) -->
+  <div class="reader-panel" id="reader-panel">
+    <div class="reader-header">
+      <div class="reader-title-box" style="flex: 1; margin-right: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <h2 id="reader-title" style="margin: 0; font-size: 18px;">Thiruppallāṇḍu</h2>
+          <button id="favorite-toggle-btn" class="fav-btn" style="background: transparent; border: none; font-size: 22px; color: var(--accent-gold); cursor: pointer; line-height: 1; padding: 0 4px; transition: transform 0.2s;">☆</button>
+        </div>
+        <p id="reader-subtitle" style="margin: 3px 0 0 0; font-size: 13px; color: var(--text-secondary);">Periyāzhvār</p>
+      </div>
+      <button class="close-reader-btn" id="close-reader-btn">✕</button>
+    </div>
+    
+    <div class="reader-content" id="reader-content">
+      <!-- Verses list loaded 10 at a time -->
+      <div class="verses-list" id="verses-list"></div>
+      
+      <!-- Load More Button -->
+      <div class="load-more-container hidden" id="load-more-container">
+        <button class="load-more-btn" id="load-more-btn">Load More Verses</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
