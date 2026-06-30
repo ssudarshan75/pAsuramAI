@@ -517,49 +517,13 @@ function populateBrowseLists() {
   
   // 3. Process Vaishnava Stotrams
   const stotramGroups = groupVersesByHymn(dbStotrams);
-  const dailyIds = ["hanumaanachaaliisaa", "narasimhakavacham", "krishnaashtakam", "vishnushodasanama"];
-  const dailyStotrams = stotramGroups.filter(g => dailyIds.includes(g.hymn_id));
   
-  if (dailyStotrams.length > 0) {
-    const subheader = document.createElement('div');
-    subheader.className = 'toc-subheader';
-    subheader.textContent = '🌟 Most Recited (Daily)';
-    mainStotramList.appendChild(subheader);
-    // Sort in order: Vishnu Shodasa, Krishna Ashtakam, Narasimha Kavacham, Hanuman Chalisa
-    const orderedDaily = ["vishnushodasanama", "krishnaashtakam", "narasimhakavacham", "hanumaanachaaliisaa"];
-    orderedDaily.forEach(hid => {
-      const g = dailyStotrams.find(group => group.hymn_id === hid);
-      if (g) mainStotramList.appendChild(createHymnIndexItem(g, dbStotrams));
-    });
-  }
+  // Sort stotrams alphabetically by name
+  stotramGroups.sort((a, b) => a.hymn_name.localeCompare(b.hymn_name));
   
-  // Group other stotrams by Deity
-  const narasimhaIds = ["narasimhakavacham", "mantraraajapadastotram"];
-  const narasimhaStotrams = stotramGroups.filter(g => narasimhaIds.includes(g.hymn_id) && g.hymn_id !== "narasimhakavacham");
-  const desikaStotrams = stotramGroups.filter(g => ["dashaavataarastotram", "garudadandakam", "nyasadasakam", "panchayudhastotram", "saranagatigadyam"].includes(g.hymn_id));
-  
-  if (narasimhaStotrams.length > 0) {
-    const subheader = document.createElement('div');
-    subheader.className = 'toc-subheader';
-    subheader.textContent = '🦁 Lord Narasimha';
-    mainStotramList.appendChild(subheader);
-    narasimhaStotrams.forEach(group => {
-      mainStotramList.appendChild(createHymnIndexItem(group, dbStotrams));
-    });
-  }
-  
-  if (desikaStotrams.length > 0) {
-    const subheader = document.createElement('div');
-    subheader.className = 'toc-subheader';
-    subheader.textContent = '🕉️ Avatāras & Acharyas';
-    mainStotramList.appendChild(subheader);
-    // Render in order
-    const orderedDesika = ["dashaavataarastotram", "garudadandakam", "nyasadasakam", "panchayudhastotram", "saranagatigadyam"];
-    orderedDesika.forEach(hid => {
-      const g = desikaStotrams.find(group => group.hymn_id === hid);
-      if (g) mainStotramList.appendChild(createHymnIndexItem(g, dbStotrams));
-    });
-  }
+  stotramGroups.forEach(group => {
+    mainStotramList.appendChild(createHymnIndexItem(group, dbStotrams));
+  });
 }
 
 function groupVersesByHymn(verses) {

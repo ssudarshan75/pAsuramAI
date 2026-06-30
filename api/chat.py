@@ -88,7 +88,12 @@ class handler(BaseHTTPRequestHandler):
             "panchayudha": "panchayudhastotram",
             "saranagatigadyam": "saranagatigadyam",
             "saranagati": "saranagatigadyam",
-            "gadyam": "saranagatigadyam"
+            "gadyam": "saranagatigadyam",
+            "sudarshanaashtakam": "sudarshanaashtakam",
+            "sudarshana": "sudarshanaashtakam",
+            "sudarshanashtakam": "sudarshanaashtakam",
+            "mantrapushpam": "mantrapushpam",
+            "pushpam": "mantrapushpam"
         }
         
         target_hymn_id = None
