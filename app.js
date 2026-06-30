@@ -4,6 +4,7 @@ let currentVersesList = [];
 let displayedVersesCount = 0;
 const VERSES_PAGE_SIZE = 10;
 let dbDivya = [];
+let dbDesika = [];
 let dbStotrams = [];
 
 // DOM Elements
@@ -21,6 +22,7 @@ const loadMoreBtn = document.getElementById('load-more-btn');
 // TOC & Views DOM Elements
 const tocContainer = document.getElementById('toc-container');
 const mainDivyaList = document.getElementById('main-divya-list');
+const mainDesikaList = document.getElementById('main-desika-list');
 const mainStotramList = document.getElementById('main-stotram-list');
 const favoritesContainer = document.getElementById('favorites-container');
 const favoritesList = document.getElementById('favorites-list');
@@ -77,13 +79,36 @@ if (chatInput) {
       switchTab(tocContainer);
     }
     
-    const items = document.querySelectorAll('.hymn-index-item');
-    items.forEach(item => {
-      const normText = normalizeText(item.textContent);
-      if (normText.includes(q)) {
-        item.style.display = 'flex';
+    const folders = document.querySelectorAll('.toc-folder');
+    folders.forEach(folder => {
+      const content = folder.querySelector('.toc-folder-content');
+      const arrow = folder.querySelector('.folder-arrow');
+      let hasVisibleMatch = false;
+      
+      const folderItems = content.querySelectorAll('.hymn-index-item');
+      folderItems.forEach(item => {
+        const normText = normalizeText(item.textContent);
+        if (normText.includes(q)) {
+          item.style.display = 'flex';
+          hasVisibleMatch = true;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      if (q.length > 0) {
+        if (hasVisibleMatch) {
+          folder.style.display = 'block';
+          content.classList.remove('hidden');
+          if (arrow) arrow.style.transform = 'rotate(90deg)';
+        } else {
+          folder.style.display = 'none';
+        }
       } else {
-        item.style.display = 'none';
+        // Reset state: folders visible, but collapsed
+        folder.style.display = 'block';
+        content.classList.add('hidden');
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
       }
     });
   });
@@ -100,6 +125,27 @@ if (loadMoreBtn) {
     renderVersesIncremental(false);
   });
 }
+
+// ----------------------------------------------------
+// Folder Accordion Toggle
+// ----------------------------------------------------
+document.querySelectorAll('.toc-folder-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    const arrow = header.querySelector('.folder-arrow');
+    
+    if (content) {
+      const isHidden = content.classList.contains('hidden');
+      if (isHidden) {
+        content.classList.remove('hidden');
+        if (arrow) arrow.style.transform = 'rotate(90deg)';
+      } else {
+        content.classList.add('hidden');
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    }
+  });
+});
 
 // ----------------------------------------------------
 // Floating Action Menu Actions
@@ -306,12 +352,12 @@ function renderFavoritesList() {
   
   if (emptyMsg) emptyMsg.classList.add('hidden');
   
-  const allDb = [...dbDivya, ...dbStotrams];
+  const allDb = [...dbDivya, ...dbDesika, ...dbStotrams];
   const groups = groupVersesByHymn(allDb);
   const favGroups = groups.filter(g => favorites.includes(g.hymn_id));
   
   favGroups.forEach(group => {
-    const srcDb = dbDivya.some(v => v.hymn_id === group.hymn_id) ? dbDivya : dbStotrams;
+    const srcDb = dbDivya.some(v => v.hymn_id === group.hymn_id) ? dbDivya : (dbDesika.some(v => v.hymn_id === group.hymn_id) ? dbDesika : dbStotrams);
     favoritesList.appendChild(createHymnIndexItem(group, srcDb));
   });
 }
@@ -345,14 +391,14 @@ function renderRecentsSection() {
   
   recentsSection.classList.remove('hidden');
   
-  const allDb = [...dbDivya, ...dbStotrams];
+  const allDb = [...dbDivya, ...dbDesika, ...dbStotrams];
   const groups = groupVersesByHymn(allDb);
   
   // Find matching groups in order of recents
   recents.forEach(recId => {
     const group = groups.find(g => g.hymn_id === recId);
     if (group) {
-      const srcDb = dbDivya.some(v => v.hymn_id === group.hymn_id) ? dbDivya : dbStotrams;
+      const srcDb = dbDivya.some(v => v.hymn_id === group.hymn_id) ? dbDivya : (dbDesika.some(v => v.hymn_id === group.hymn_id) ? dbDesika : dbStotrams);
       recentsList.appendChild(createHymnIndexItem(group, srcDb));
     }
   });
@@ -416,10 +462,13 @@ async function initLocalDatabase() {
     const resDivya = await fetch('data/divya_prabandham.json');
     dbDivya = await resDivya.json();
     
+    const resDesika = await fetch('data/desika_prabandham.json');
+    dbDesika = await resDesika.json();
+    
     const resStotrams = await fetch('data/vaishnava_stotrams.json');
     dbStotrams = await resStotrams.json();
     
-    console.log(`Local DB loaded: ${dbDivya.length} Divya Prabandham, ${dbStotrams.length} Stotrams.`);
+    console.log(`Local DB loaded: ${dbDivya.length} Divya, ${dbDesika.length} Desika, ${dbStotrams.length} Stotrams.`);
     populateBrowseLists();
     renderRecentsSection();
   } catch (err) {
@@ -428,9 +477,10 @@ async function initLocalDatabase() {
 }
 
 function populateBrowseLists() {
-  if (!mainDivyaList || !mainStotramList) return;
+  if (!mainDivyaList || !mainDesikaList || !mainStotramList) return;
   
   mainDivyaList.innerHTML = '';
+  mainDesikaList.innerHTML = '';
   mainStotramList.innerHTML = '';
   
   // 1. Process Divya Prabandham
@@ -459,7 +509,13 @@ function populateBrowseLists() {
     });
   }
   
-  // 2. Process Vaishnava Stotrams
+  // 2. Process Desika Prabandham
+  const desikaGroups = groupVersesByHymn(dbDesika);
+  desikaGroups.forEach(group => {
+    mainDesikaList.appendChild(createHymnIndexItem(group, dbDesika));
+  });
+  
+  // 3. Process Vaishnava Stotrams
   const stotramGroups = groupVersesByHymn(dbStotrams);
   const mostRecitedStotramIds = ["hanumaanachaaliisaa", "narasimhakavacham", "mantraraajapadastotram"];
   const mostRecitedStotram = stotramGroups.filter(g => mostRecitedStotramIds.includes(g.hymn_id));
@@ -642,21 +698,40 @@ function appendVerseCard(verse) {
   
   const meta = document.createElement('div');
   meta.className = 'verse-meta';
-  meta.textContent = verse.title || (verse.hymn_name ? `${verse.hymn_name} - Verse ${verse.verse_number}` : `Verse ${verse.verse_number}`);
+  
+  const isStotram = (verse.hymn_id && !['tiruppallaandu', 'tiruppaavai', 'tiruppalliyezuchchi', 'amalaanadipiraan', 'kanninunshiruttaambu', 'navamanimaalai', 'adhikaarasangraham'].includes(verse.hymn_id));
+  
+  if (isStotram) {
+    meta.style.display = 'none';
+  } else {
+    const isDivya = ['tiruppallaandu', 'tiruppaavai', 'tiruppalliyezuchchi', 'amalaanadipiraan', 'kanninunshiruttaambu'].includes(verse.hymn_id);
+    meta.textContent = isDivya ? `Pāsuram ${verse.verse_number}` : `Verse ${verse.verse_number}`;
+  }
   cardDiv.appendChild(meta);
   
   const textBox = document.createElement('div');
   textBox.className = 'verse-text-box';
   
-  const lineStyle = `font-size: ${chantingFontSize}; font-family: ${chantingFontFamily}; line-height: 1.5;`;
+  const lineStyle = `font-size: ${chantingFontSize}; font-family: ${chantingFontFamily}; line-height: 1.55;`;
   const pillStyle = `font-size: calc(${chantingFontSize} - 1px); font-family: ${chantingFontFamily};`;
   
   if (isSplitMode && verse.split_lines && verse.split_lines.length > 0) {
-    verse.split_lines.forEach(line => {
+    verse.split_lines.forEach((line, lineIdx) => {
       const lineDiv = document.createElement('div');
       lineDiv.className = 'word-pills-container';
       
-      const words = line.split(' | ');
+      let words = line.split(' | ');
+      
+      // Inline numbering for stotrams on the last split line
+      if (isStotram && lineIdx === verse.split_lines.length - 1) {
+        const lastWordIdx = words.length - 1;
+        if (lastWordIdx >= 0) {
+          let lastWord = words[lastWordIdx].trim();
+          lastWord = lastWord.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
+          words[lastWordIdx] = lastWord + `  ॥ ${verse.verse_number} ||`;
+        }
+      }
+      
       words.forEach((word, wIdx) => {
         const pill = document.createElement('span');
         pill.className = 'word-pill';
@@ -675,10 +750,18 @@ function appendVerseCard(verse) {
     });
   } else {
     const lines = verse.original.split('\n');
-    lines.forEach(line => {
+    lines.forEach((line, lineIdx) => {
+      let displayLine = line.trim();
+      
+      // Inline numbering for stotrams on the last conjoined line
+      if (isStotram && lineIdx === lines.length - 1) {
+        displayLine = displayLine.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
+        displayLine = displayLine + `  ॥ ${verse.verse_number} ||`;
+      }
+      
       const lineP = document.createElement('p');
       lineP.className = 'verse-line';
-      lineP.textContent = line;
+      lineP.textContent = displayLine;
       lineP.style.cssText = lineStyle;
       textBox.appendChild(lineP);
     });
@@ -696,19 +779,14 @@ function handleSearchOrAskAI() {
   if (!messageText) return;
   
   // 1. Try to find an instant hymn match (Fuzzy Match / I'm Feeling Lucky)
-  const allDb = [...dbDivya, ...dbStotrams];
+  const allDb = [...dbDivya, ...dbDesika, ...dbStotrams];
   const groups = groupVersesByHymn(allDb);
   const q = normalizeText(messageText);
   
   let bestMatchGroup = null;
   for (const group of groups) {
     const normName = normalizeText(group.hymn_name);
-    const normComposer = normalizeText(group.composer);
-    
-    if (normName === q) {
-      bestMatchGroup = group;
-      break;
-    } else if (normName.includes(q) || q.includes(normName)) {
+    if (normName === q || normName.includes(q) || q.includes(normName)) {
       bestMatchGroup = group;
       break;
     }
@@ -717,7 +795,7 @@ function handleSearchOrAskAI() {
   // If we found a matching hymn, open it directly in the reader overlay!
   if (bestMatchGroup) {
     chatInput.value = '';
-    const srcDb = dbDivya.some(v => v.hymn_id === bestMatchGroup.hymn_id) ? dbDivya : dbStotrams;
+    const srcDb = dbDivya.some(v => v.hymn_id === bestMatchGroup.hymn_id) ? dbDivya : (dbDesika.some(v => v.hymn_id === bestMatchGroup.hymn_id) ? dbDesika : dbStotrams);
     const hymnVerses = srcDb.filter(v => v.hymn_id === bestMatchGroup.hymn_id);
     loadVersesIntoReader(hymnVerses);
     return;

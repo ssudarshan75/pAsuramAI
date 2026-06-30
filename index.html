@@ -44,18 +44,44 @@
     <div class="main-content-flow">
       <!-- Table of Contents Section (Default View) -->
       <div id="toc-container" class="toc-container hidden">
-        <h2 class="section-title">Table of Contents</h2>
+        <h2 class="section-title">Scriptures</h2>
         
-        <div class="category-section">
-          <h3 class="category-title">Divya Prabandham</h3>
-          <div class="hymn-list-container" id="main-divya-list">
+        <!-- Accordion Folders -->
+        <div class="toc-folder" data-folder="divya" style="margin-bottom: 10px;">
+          <div class="toc-folder-header" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--bg-card-border); border-radius: 12px; cursor: pointer; transition: 0.2s;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 16px;">📁</span>
+              <span style="font-weight: 600; font-size: 14.5px; color: var(--text-primary);">Divya Prabandham</span>
+            </div>
+            <span class="folder-arrow" style="font-size: 11px; color: var(--text-secondary); transition: transform 0.2s;">▶</span>
+          </div>
+          <div class="toc-folder-content hidden" id="main-divya-list" style="margin-top: 8px; padding-left: 4px;">
+            <!-- Loaded dynamically from local database -->
+          </div>
+        </div>
+
+        <div class="toc-folder" data-folder="desika" style="margin-bottom: 10px;">
+          <div class="toc-folder-header" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--bg-card-border); border-radius: 12px; cursor: pointer; transition: 0.2s;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 16px;">📁</span>
+              <span style="font-weight: 600; font-size: 14.5px; color: var(--text-primary);">Desika Prabandham</span>
+            </div>
+            <span class="folder-arrow" style="font-size: 11px; color: var(--text-secondary); transition: transform 0.2s;">▶</span>
+          </div>
+          <div class="toc-folder-content hidden" id="main-desika-list" style="margin-top: 8px; padding-left: 4px;">
             <!-- Loaded dynamically from local database -->
           </div>
         </div>
         
-        <div class="category-section" style="margin-top: 24px;">
-          <h3 class="category-title">Vaishnava Stotrams</h3>
-          <div class="hymn-list-container" id="main-stotram-list">
+        <div class="toc-folder" data-folder="stotrams" style="margin-bottom: 10px;">
+          <div class="toc-folder-header" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--bg-card-border); border-radius: 12px; cursor: pointer; transition: 0.2s;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 16px;">📁</span>
+              <span style="font-weight: 600; font-size: 14.5px; color: var(--text-primary);">Vaishnava Stotram</span>
+            </div>
+            <span class="folder-arrow" style="font-size: 11px; color: var(--text-secondary); transition: transform 0.2s;">▶</span>
+          </div>
+          <div class="toc-folder-content hidden" id="main-stotram-list" style="margin-top: 8px; padding-left: 4px;">
             <!-- Loaded dynamically from local database -->
           </div>
         </div>
