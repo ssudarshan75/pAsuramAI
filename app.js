@@ -709,15 +709,11 @@ function appendVerseCard(verse) {
     repeatBadge.style.cssText = `
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      font-size: 10.5px;
-      color: var(--accent-gold);
-      font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+      font-size: 14px;
+      margin-bottom: 6px;
+      opacity: 0.85;
     `;
-    repeatBadge.innerHTML = '<span>🔄</span> Recited Twice';
+    repeatBadge.innerHTML = '🔄';
     cardDiv.appendChild(repeatBadge);
   }
   
