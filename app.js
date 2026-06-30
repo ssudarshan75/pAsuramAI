@@ -51,6 +51,15 @@ document.body.className = appTheme === 'midnight' ? '' : 'theme-' + appTheme;
 // ----------------------------------------------------
 // Setup Event Listeners
 // ----------------------------------------------------
+const headerHomeBtn = document.getElementById('header-home-btn');
+if (headerHomeBtn) {
+  headerHomeBtn.addEventListener('click', () => {
+    switchTab(welcomeView);
+    chatInput.value = '';
+    chatInput.dispatchEvent(new Event('input'));
+  });
+}
+
 if (chatSendBtn) {
   chatSendBtn.addEventListener('click', handleSearchOrAskAI);
 }
