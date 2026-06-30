@@ -656,23 +656,6 @@ function appendVerseCard(verse) {
   meta.style.display = 'none';
   cardDiv.appendChild(meta);
   
-  // Show repeat icon for first and last verses (parayanam standard)
-  const isFirst = (verse.verse_number === 1);
-  const isLast = (currentVersesList.length > 0 && currentVersesList[currentVersesList.length - 1].verse_number === verse.verse_number);
-  if (isFirst || isLast) {
-    const repeatBadge = document.createElement('div');
-    repeatBadge.className = 'repeat-twice-badge';
-    repeatBadge.style.cssText = `
-      display: inline-flex;
-      align-items: center;
-      font-size: 14px;
-      margin-bottom: 6px;
-      opacity: 0.85;
-    `;
-    repeatBadge.innerHTML = '🔄';
-    cardDiv.appendChild(repeatBadge);
-  }
-  
   const textBox = document.createElement('div');
   textBox.className = 'verse-text-box';
   
