@@ -517,25 +517,26 @@ function populateBrowseLists() {
   
   // 3. Process Vaishnava Stotrams
   const stotramGroups = groupVersesByHymn(dbStotrams);
-  const mostRecitedStotramIds = ["hanumaanachaaliisaa", "narasimhakavacham", "mantraraajapadastotram"];
-  const mostRecitedStotram = stotramGroups.filter(g => mostRecitedStotramIds.includes(g.hymn_id));
+  const dailyIds = ["hanumaanachaaliisaa", "narasimhakavacham", "krishnaashtakam", "vishnushodasanama"];
+  const dailyStotrams = stotramGroups.filter(g => dailyIds.includes(g.hymn_id));
   
-  if (mostRecitedStotram.length > 0) {
+  if (dailyStotrams.length > 0) {
     const subheader = document.createElement('div');
     subheader.className = 'toc-subheader';
     subheader.textContent = '🌟 Most Recited (Daily)';
     mainStotramList.appendChild(subheader);
-    mostRecitedStotram.forEach(group => {
-      mainStotramList.appendChild(createHymnIndexItem(group, dbStotrams));
+    // Sort in order: Vishnu Shodasa, Krishna Ashtakam, Narasimha Kavacham, Hanuman Chalisa
+    const orderedDaily = ["vishnushodasanama", "krishnaashtakam", "narasimhakavacham", "hanumaanachaaliisaa"];
+    orderedDaily.forEach(hid => {
+      const g = dailyStotrams.find(group => group.hymn_id === hid);
+      if (g) mainStotramList.appendChild(createHymnIndexItem(g, dbStotrams));
     });
   }
   
   // Group other stotrams by Deity
   const narasimhaIds = ["narasimhakavacham", "mantraraajapadastotram"];
-  const narasimhaStotrams = stotramGroups.filter(g => narasimhaIds.includes(g.hymn_id));
-  const hanumanStotrams = stotramGroups.filter(g => g.hymn_id === "hanumaanachaaliisaa");
-  const desikaStotrams = stotramGroups.filter(g => ["dashaavataarastotram", "shriistuti"].includes(g.hymn_id));
-  const otherStotrams = stotramGroups.filter(g => !mostRecitedStotramIds.includes(g.hymn_id) && !narasimhaIds.includes(g.hymn_id) && !["dashaavataarastotram", "shriistuti"].includes(g.hymn_id));
+  const narasimhaStotrams = stotramGroups.filter(g => narasimhaIds.includes(g.hymn_id) && g.hymn_id !== "narasimhakavacham");
+  const desikaStotrams = stotramGroups.filter(g => ["dashaavataarastotram", "garudadandakam", "nyasadasakam", "panchayudhastotram"].includes(g.hymn_id));
   
   if (narasimhaStotrams.length > 0) {
     const subheader = document.createElement('div');
@@ -547,25 +548,12 @@ function populateBrowseLists() {
     });
   }
   
-  if (hanumanStotrams.length > 0) {
+  if (desikaStotrams.length > 0) {
     const subheader = document.createElement('div');
     subheader.className = 'toc-subheader';
-    subheader.textContent = '🐒 Lord Hanumān';
-    mainStotramList.appendChild(subheader);
-    hanumanStotrams.forEach(group => {
-      mainStotramList.appendChild(createHymnIndexItem(group, dbStotrams));
-    });
-  }
-  
-  if (desikaStotrams.length > 0 || otherStotrams.length > 0) {
-    const subheader = document.createElement('div');
-    subheader.className = 'toc-subheader';
-    subheader.textContent = '🕉️ Avatāras & Devī';
+    subheader.textContent = '🕉️ Avatāras & Acharyas';
     mainStotramList.appendChild(subheader);
     desikaStotrams.forEach(group => {
-      mainStotramList.appendChild(createHymnIndexItem(group, dbStotrams));
-    });
-    otherStotrams.forEach(group => {
       mainStotramList.appendChild(createHymnIndexItem(group, dbStotrams));
     });
   }

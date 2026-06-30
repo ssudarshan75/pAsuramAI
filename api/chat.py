@@ -75,7 +75,17 @@ class handler(BaseHTTPRequestHandler):
             "chalisa": "hanumaanachaaliisaa",
             "narasimha": "narasimhakavacham",
             "kavacham": "narasimhakavacham",
-            "mantraraajapada": "mantraraajapadastotram"
+            "mantraraajapada": "mantraraajapadastotram",
+            "krishnaashtakam": "krishnaashtakam",
+            "krishnashtakam": "krishnaashtakam",
+            "shodasanama": "vishnushodasanama",
+            "shodasa": "vishnushodasanama",
+            "garudadandakam": "garudadandakam",
+            "garuda": "garudadandakam",
+            "nyasadasakam": "nyasadasakam",
+            "nyasa": "nyasadasakam",
+            "panchayudhastotram": "panchayudhastotram",
+            "panchayudha": "panchayudhastotram"
         }
         
         target_hymn_id = None
