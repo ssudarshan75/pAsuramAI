@@ -709,6 +709,27 @@ function appendVerseCard(verse) {
   }
   cardDiv.appendChild(meta);
   
+  // Show repeat icon for first and last verses (parayanam standard)
+  const isFirst = (verse.verse_number === 1);
+  const isLast = (currentVersesList.length > 0 && currentVersesList[currentVersesList.length - 1].verse_number === verse.verse_number);
+  if (isFirst || isLast) {
+    const repeatBadge = document.createElement('div');
+    repeatBadge.className = 'repeat-twice-badge';
+    repeatBadge.style.cssText = `
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      color: var(--accent-gold);
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    `;
+    repeatBadge.innerHTML = '<span>🔄</span> Recited Twice';
+    cardDiv.appendChild(repeatBadge);
+  }
+  
   const textBox = document.createElement('div');
   textBox.className = 'verse-text-box';
   
