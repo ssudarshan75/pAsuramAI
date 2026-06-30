@@ -478,6 +478,9 @@ input:checked + .slider:before {
   font-weight: 400;
   color: var(--text-primary);
   letter-spacing: 0.2px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Legible Inline Word Pills (Split Mode) */
@@ -498,6 +501,9 @@ input:checked + .slider:before {
   cursor: pointer;
   transition: all 0.15s;
   display: inline-block;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .word-pill:active {
