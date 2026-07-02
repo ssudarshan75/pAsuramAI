@@ -628,6 +628,28 @@ function createHymnIndexItem(group, sourceDb) {
 // ----------------------------------------------------
 // Reader Overlay Rendering
 // ----------------------------------------------------
+function updateReaderHeader() {
+  if (currentVersesList.length === 0) return;
+  const first = currentVersesList[0];
+  
+  let cleanTitle = "Hymn Search Results";
+  if (first.hymn_name) {
+    cleanTitle = first.hymn_name;
+  } else if (first.title) {
+    cleanTitle = first.title.split(' - ')[0];
+  }
+  
+  let subtitleText = first.alvar || first.composer || "Various Composers";
+  
+  if (currentLanguage === 'tamil') {
+    cleanTitle = transliterateIASTtoTamil(cleanTitle);
+    subtitleText = transliterateIASTtoTamil(subtitleText);
+  }
+  
+  readerTitle.textContent = cleanTitle;
+  readerSubtitle.textContent = subtitleText;
+}
+
 function loadVersesIntoReader(versesArray) {
   currentVersesList = versesArray;
   displayedVersesCount = 0;
@@ -639,15 +661,7 @@ function loadVersesIntoReader(versesArray) {
     addToRecents(hymnId);
   }
   
-  const first = versesArray[0];
-  let cleanTitle = "Hymn Search Results";
-  if (first.title) {
-    cleanTitle = first.title.split(' - ')[0];
-  } else if (first.hymn_name) {
-    cleanTitle = first.hymn_name;
-  }
-  readerTitle.textContent = cleanTitle;
-  readerSubtitle.textContent = first.alvar || first.composer || "Various Composers";
+  updateReaderHeader();
   
   renderVersesIncremental(false);
   readerPanel.classList.add('open');
@@ -726,6 +740,7 @@ function appendHymnTitleHeaderIfNeeded() {
 function renderVersesIncremental(isReRender = false) {
   if (isReRender) {
     versesList.innerHTML = '';
+    updateReaderHeader();
     appendHymnTitleHeaderIfNeeded();
     appendDesikaTaniyanIfNeeded();
     const limit = displayedVersesCount;
