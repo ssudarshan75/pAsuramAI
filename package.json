@@ -1,0 +1,27 @@
+{
+  "name": "divya-prabandham-learner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "mkdir -p www && cp index.html index.css app.js manifest.json www/ && cp -R data www/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssudarshan75/pAsuramAI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ssudarshan75/pAsuramAI/issues"
+  },
+  "homepage": "https://github.com/ssudarshan75/pAsuramAI#readme",
+  "dependencies": {
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/ios": "^8.4.1"
+  }
+}
