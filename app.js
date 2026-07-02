@@ -623,15 +623,50 @@ function loadVersesIntoReader(versesArray) {
   readerPanel.classList.add('open');
 }
 
+function appendDesikaTaniyanIfNeeded() {
+  if (currentVersesList.length === 0) return;
+  const first = currentVersesList[0];
+  const isDesikaWork = (first.composer && first.composer.toLowerCase().includes("deśika")) || 
+                       (first.composer && first.composer.toLowerCase().includes("desika")) ||
+                       (first.category === "Desika Prabandham");
+                       
+  if (isDesikaWork) {
+    const thaniyanCard = document.createElement('div');
+    thaniyanCard.className = 'desika-thaniyan-card';
+    thaniyanCard.style.cssText = `
+      background: rgba(217, 167, 74, 0.05);
+      border: 1px solid rgba(217, 167, 74, 0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      text-align: center;
+    `;
+    thaniyanCard.innerHTML = `
+      <div style="font-size: 12px; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 600;">
+        Śrī Desika Taniyan
+      </div>
+      <div style="font-size: 16.5px; line-height: 1.45; font-style: italic; color: var(--text-primary); font-family: 'Inter', sans-serif;">
+        śrīmān vēṅkaṭanāthāryaḥ kavitārkikakēsarī |<br>
+        vēdāntācāryavaryō mē sannidhattāṃ sadā hṛdi ||
+      </div>
+    `;
+    versesList.appendChild(thaniyanCard);
+  }
+}
+
 function renderVersesIncremental(isReRender = false) {
   if (isReRender) {
     versesList.innerHTML = '';
+    appendDesikaTaniyanIfNeeded();
     const limit = displayedVersesCount;
     for (let i = 0; i < limit; i++) {
       appendVerseCard(currentVersesList[i]);
     }
   } else {
     const start = displayedVersesCount;
+    if (start === 0) {
+      appendDesikaTaniyanIfNeeded();
+    }
     const end = Math.min(start + VERSES_PAGE_SIZE, currentVersesList.length);
     
     for (let i = start; i < end; i++) {
