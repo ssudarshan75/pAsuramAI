@@ -93,7 +93,12 @@ class handler(BaseHTTPRequestHandler):
             "sudarshana": "sudarshanaashtakam",
             "sudarshanashtakam": "sudarshanaashtakam",
             "mantrapushpam": "mantrapushpam",
-            "pushpam": "mantrapushpam"
+            "pushpam": "mantrapushpam",
+            "adaikkalappattu": "adaikkalappattu",
+            "adaikkalam": "adaikkalappattu",
+            "adaikalapathu": "adaikkalappattu",
+            "satrumurai": "vadagalaisaattrumurai",
+            "saattrumurai": "vadagalaisaattrumurai"
         }
         
         target_hymn_id = None
