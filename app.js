@@ -6,6 +6,7 @@ const VERSES_PAGE_SIZE = 10;
 let dbDivya = [];
 let dbDesika = [];
 let dbStotrams = [];
+let currentLanguage = 'english';
 
 // DOM Elements
 const chatMessages = document.getElementById('chat-messages');
@@ -59,6 +60,35 @@ if (headerHomeBtn) {
     switchTab(welcomeView);
     chatInput.value = '';
     chatInput.dispatchEvent(new Event('input'));
+  });
+}
+
+const langBtnEng = document.getElementById('lang-btn-eng');
+const langBtnTam = document.getElementById('lang-btn-tam');
+
+if (langBtnEng && langBtnTam) {
+  langBtnEng.addEventListener('click', () => {
+    if (currentLanguage === 'english') return;
+    currentLanguage = 'english';
+    langBtnEng.classList.add('active');
+    langBtnEng.style.background = 'var(--accent-gold)';
+    langBtnEng.style.color = '#070b19';
+    langBtnTam.classList.remove('active');
+    langBtnTam.style.background = 'transparent';
+    langBtnTam.style.color = 'var(--text-secondary)';
+    renderVersesIncremental(true);
+  });
+  
+  langBtnTam.addEventListener('click', () => {
+    if (currentLanguage === 'tamil') return;
+    currentLanguage = 'tamil';
+    langBtnTam.classList.add('active');
+    langBtnTam.style.background = 'var(--accent-gold)';
+    langBtnTam.style.color = '#070b19';
+    langBtnEng.classList.remove('active');
+    langBtnEng.style.background = 'transparent';
+    langBtnEng.style.color = 'var(--text-secondary)';
+    renderVersesIncremental(true);
   });
 }
 
@@ -641,13 +671,20 @@ function appendDesikaTaniyanIfNeeded() {
       margin-bottom: 16px;
       text-align: center;
     `;
+    
+    let label = "Śrī Desika Taniyan";
+    let body = `śrīmān vēṅkaṭanāthāryaḥ kavitārkikakēsarī |<br>vēdāntācāryavaryō mē sannidhattāṃ sadā hṛdi ||`;
+    if (currentLanguage === 'tamil') {
+      label = "ஸ்ரீ தேசிக தனியன்";
+      body = `ஸ்ரீமான் வேங்கடநாதார்யஹ் கவிதாரிகிககேஸரீ |<br>வேதாந்தாசார்யவர்யோ மே ஸன்னிதத்தாம் ஸதா ஹ்ருதி ||`;
+    }
+    
     thaniyanCard.innerHTML = `
       <div style="font-size: 12px; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 600;">
-        Śrī Desika Taniyan
+        ${label}
       </div>
       <div style="font-size: 16.5px; line-height: 1.45; font-style: italic; color: var(--text-primary); font-family: 'Inter', sans-serif;">
-        śrīmān vēṅkaṭanāthāryaḥ kavitārkikakēsarī |<br>
-        vēdāntācāryavaryō mē sannidhattāṃ sadā hṛdi ||
+        ${body}
       </div>
     `;
     versesList.appendChild(thaniyanCard);
@@ -657,6 +694,13 @@ function appendDesikaTaniyanIfNeeded() {
 function appendHymnTitleHeaderIfNeeded() {
   if (currentVersesList.length === 0) return;
   const first = currentVersesList[0];
+  
+  let hName = first.hymn_name;
+  let compName = first.alvar || first.composer || "Various Composers";
+  if (currentLanguage === 'tamil') {
+    hName = transliterateIASTtoTamil(hName);
+    compName = transliterateIASTtoTamil(compName);
+  }
   
   const titleCard = document.createElement('div');
   titleCard.className = 'hymn-title-header-card';
@@ -669,10 +713,10 @@ function appendHymnTitleHeaderIfNeeded() {
   
   titleCard.innerHTML = `
     <h1 style="font-size: 28px; font-weight: 700; color: var(--accent-gold); margin: 0 0 6px 0; font-family: 'Outfit', sans-serif; letter-spacing: 0.5px;">
-      ${first.hymn_name}
+      ${hName}
     </h1>
     <div style="font-size: 14px; color: var(--text-secondary); font-family: 'Inter', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
-      ${first.alvar || first.composer || "Various Composers"}
+      ${compName}
     </div>
   `;
   
@@ -737,14 +781,25 @@ function appendVerseCard(verse) {
         if (lastWordIdx >= 0) {
           let lastWord = words[lastWordIdx].trim();
           lastWord = lastWord.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
-          words[lastWordIdx] = lastWord + `  ॥ ${verse.verse_number} ||`;
+          if (currentLanguage === 'tamil') {
+            words[lastWordIdx] = transliterateIASTtoTamil(lastWord) + `  ॥ ${verse.verse_number} ||`;
+          } else {
+            words[lastWordIdx] = lastWord + `  ॥ ${verse.verse_number} ||`;
+          }
         }
       }
       
       words.forEach((word, wIdx) => {
+        let displayText = word;
+        if (currentLanguage === 'tamil') {
+          if (lineIdx !== verse.split_lines.length - 1 || wIdx !== words.length - 1) {
+            displayText = transliterateIASTtoTamil(word);
+          }
+        }
+        
         const pill = document.createElement('span');
         pill.className = 'word-pill';
-        pill.textContent = word;
+        pill.textContent = displayText;
         pill.style.cssText = pillStyle;
         lineDiv.appendChild(pill);
         
@@ -765,7 +820,15 @@ function appendVerseCard(verse) {
       // Inline numbering on the last conjoined line
       if (lineIdx === lines.length - 1) {
         displayLine = displayLine.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
-        displayLine = displayLine + `  ॥ ${verse.verse_number} ||`;
+        if (currentLanguage === 'tamil') {
+          displayLine = transliterateIASTtoTamil(displayLine) + `  ॥ ${verse.verse_number} ||`;
+        } else {
+          displayLine = displayLine + `  ॥ ${verse.verse_number} ||`;
+        }
+      } else {
+        if (currentLanguage === 'tamil') {
+          displayLine = transliterateIASTtoTamil(displayLine);
+        }
       }
       
       const lineP = document.createElement('p');
@@ -901,6 +964,108 @@ function escapeHTML(str) {
       '"': '&quot;'
     }[tag] || tag)
   );
+}
+
+function transliterateIASTtoTamil(text) {
+  if (!text) return "";
+  
+  const vowelMap = {
+    'ai': 'ஐ', 'au': 'ஔ',
+    'ā': 'ஆ', 'ī': 'ஈ', 'ū': 'ஊ', 'ē': 'ஏ', 'ō': 'ஓ',
+    'a': 'அ', 'i': 'இ', 'u': 'உ', 'e': 'எ', 'o': 'ஒ',
+    'ṛ': 'ரு'
+  };
+  
+  const vowelSignMap = {
+    'ā': 'ா', 'ī': 'ீ',
+    'i': 'ி', 'ū': 'ூ', 'u': 'ு',
+    'e': 'ெ', 'ē': 'ே', 'ai': 'ை', 'o': 'ொ', 'ō': 'ோ', 'au': 'ௌ', 'a': '',
+    'ṛ': '்ரு'
+  };
+  
+  const consonantMap = {
+    'kṣ': 'க்ஷ',
+    'kh': 'க', 'gh': 'க', 'ch': 'ச', 'jh': 'ஜ', 'th': 'த', 'dh': 'த', 'ṭh': 'ட', 'ḍh': 'ட', 'ph': 'ப', 'bh': 'ப',
+    'k': 'க', 'g': 'க', 'c': 'ச', 'j': 'ஜ', 't': 'த', 'd': 'த', 'ṭ': 'ட', 'ḍ': 'ட', 'p': 'ப', 'b': 'ப',
+    'ṅ': 'ங', 'ñ': 'ஞ', 'ṇ': 'ண', 'n': 'ன', 'm': 'ம', 'y': 'ய', 'r': 'ர', 'l': 'ல', 'v': 'வ', 'ḻ': 'ழ', 'ḷ': 'ள', 'ṟ': 'ற',
+    'ś': 'ஶ', 'ṣ': 'ஷ', 's': 'ஸ', 'h': 'ஹ'
+  };
+  
+  let result = "";
+  let i = 0;
+  while (i < text.length) {
+    let matched = false;
+    
+    // 1. Try to match consonant first
+    for (let len of [2, 1]) {
+      if (i + len <= text.length) {
+        let sub = text.slice(i, i + len).toLowerCase();
+        if (consonantMap[sub] !== undefined) {
+          let nextVowel = "";
+          let vowelLen = 0;
+          for (let vLen of [2, 1]) {
+            if (i + len + vLen <= text.length) {
+              let vSub = text.slice(i + len, i + len + vLen).toLowerCase();
+              if (vowelSignMap[vSub] !== undefined) {
+                nextVowel = vSub;
+                vowelLen = vLen;
+                break;
+              }
+            }
+          }
+          
+          let baseCons = consonantMap[sub];
+          if (sub === 'n') {
+            let isWordStart = (i === 0 || /\s/.test(text[i-1]));
+            let nextSub = text.slice(i + len, i + len + 2).toLowerCase();
+            let isDental = /^(t|d)/.test(nextSub);
+            baseCons = (isWordStart || isDental) ? 'ந' : 'ன';
+          }
+          
+          if (vowelLen > 0) {
+            result += baseCons + vowelSignMap[nextVowel];
+            i += len + vowelLen;
+          } else {
+            result += baseCons + '்';
+            i += len;
+          }
+          matched = true;
+          break;
+        }
+      }
+    }
+    
+    if (matched) continue;
+    
+    // 2. Try to match standalone vowel
+    for (let len of [2, 1]) {
+      if (i + len <= text.length) {
+        let sub = text.slice(i, i + len).toLowerCase();
+        if (vowelMap[sub] !== undefined) {
+          result += vowelMap[sub];
+          i += len;
+          matched = true;
+          break;
+        }
+      }
+    }
+    
+    if (matched) continue;
+    
+    // 3. Special characters & punctuation
+    let char = text[i];
+    if (char === 'ṃ' || char === 'ṁ') {
+      result += 'ம்';
+      i += 1;
+    } else if (char === 'ḥ' || char === 'ḥ') {
+      result += 'ஃ';
+      i += 1;
+    } else {
+      result += char;
+      i += 1;
+    }
+  }
+  return result;
 }
 
 // ----------------------------------------------------
