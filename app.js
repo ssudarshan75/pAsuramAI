@@ -654,9 +654,35 @@ function appendDesikaTaniyanIfNeeded() {
   }
 }
 
+function appendHymnTitleHeaderIfNeeded() {
+  if (currentVersesList.length === 0) return;
+  const first = currentVersesList[0];
+  
+  const titleCard = document.createElement('div');
+  titleCard.className = 'hymn-title-header-card';
+  titleCard.style.cssText = `
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 16px 8px;
+    border-bottom: 2px solid rgba(217, 167, 74, 0.15);
+  `;
+  
+  titleCard.innerHTML = `
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--accent-gold); margin: 0 0 6px 0; font-family: 'Outfit', sans-serif; letter-spacing: 0.5px;">
+      ${first.hymn_name}
+    </h1>
+    <div style="font-size: 14px; color: var(--text-secondary); font-family: 'Inter', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
+      ${first.alvar || first.composer || "Various Composers"}
+    </div>
+  `;
+  
+  versesList.appendChild(titleCard);
+}
+
 function renderVersesIncremental(isReRender = false) {
   if (isReRender) {
     versesList.innerHTML = '';
+    appendHymnTitleHeaderIfNeeded();
     appendDesikaTaniyanIfNeeded();
     const limit = displayedVersesCount;
     for (let i = 0; i < limit; i++) {
@@ -665,6 +691,7 @@ function renderVersesIncremental(isReRender = false) {
   } else {
     const start = displayedVersesCount;
     if (start === 0) {
+      appendHymnTitleHeaderIfNeeded();
       appendDesikaTaniyanIfNeeded();
     }
     const end = Math.min(start + VERSES_PAGE_SIZE, currentVersesList.length);
