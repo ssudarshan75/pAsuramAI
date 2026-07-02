@@ -934,6 +934,21 @@ function escapeHTML(str) {
 function transliterateIASTtoTamil(text) {
   if (!text) return "";
   
+  // Pre-process common proper names/terms for perfect traditional spelling
+  let resultText = text;
+  resultText = resultText.replace(/swāmi vedānta deśika/gi, "ஸ்வாமி வேதாந்த தேசிகன்");
+  resultText = resultText.replace(/periyāzvār/gi, "பெரியாழ்வார்");
+  resultText = resultText.replace(/āṇḍāl/gi, "ஆண்டாள்");
+  resultText = resultText.replace(/tiruppallāṇḍu/gi, "திருப்பல்லாண்டு");
+  resultText = resultText.replace(/tiruppallaandu/gi, "திருப்பல்லாண்டு");
+  resultText = resultText.replace(/adaikkalappattu/gi, "அடைக்கலப்பத்து");
+  
+  // If the entire text is a matched override, return it immediately
+  const cleanTrimmed = resultText.trim();
+  if (["ஸ்வாமி வேதாந்த தேசிகன்", "பெரியாழ்வார்", "ஆண்டாள்", "திருப்பல்லாண்டு", "அடைக்கலப்பத்து"].includes(cleanTrimmed)) {
+    return cleanTrimmed;
+  }
+  
   const vowelMap = {
     'ai': 'ஐ', 'au': 'ஔ',
     'ā': 'ஆ', 'ī': 'ஈ', 'ū': 'ஊ', 'ē': 'ஏ', 'ō': 'ஓ',
@@ -953,24 +968,25 @@ function transliterateIASTtoTamil(text) {
     'kh': 'க', 'gh': 'க', 'ch': 'ச', 'jh': 'ஜ', 'th': 'த', 'dh': 'த', 'ṭh': 'ட', 'ḍh': 'ட', 'ph': 'ப', 'bh': 'ப',
     'k': 'க', 'g': 'க', 'c': 'ச', 'j': 'ஜ', 't': 'த', 'd': 'த', 'ṭ': 'ட', 'ḍ': 'ட', 'p': 'ப', 'b': 'ப',
     'ṅ': 'ங', 'ñ': 'ஞ', 'ṇ': 'ண', 'n': 'ன', 'm': 'ம', 'y': 'ய', 'r': 'ர', 'l': 'ல', 'v': 'வ', 'ḻ': 'ழ', 'ḷ': 'ள', 'ṟ': 'ற',
-    'ś': 'ஶ', 'ṣ': 'ஷ', 's': 'ஸ', 'h': 'ஹ'
+    'ś': 'ஶ', 'ṣ': 'ஷ', 's': 'ஸ', 'h': 'ஹ', 'w': 'வ', 'z': 'ழ'
   };
   
   let result = "";
   let i = 0;
-  while (i < text.length) {
+  let textToProcess = resultText;
+  while (i < textToProcess.length) {
     let matched = false;
     
     // 1. Try to match consonant first
     for (let len of [2, 1]) {
-      if (i + len <= text.length) {
-        let sub = text.slice(i, i + len).toLowerCase();
+      if (i + len <= textToProcess.length) {
+        let sub = textToProcess.slice(i, i + len).toLowerCase();
         if (consonantMap[sub] !== undefined) {
           let nextVowel = "";
           let vowelLen = 0;
           for (let vLen of [2, 1]) {
-            if (i + len + vLen <= text.length) {
-              let vSub = text.slice(i + len, i + len + vLen).toLowerCase();
+            if (i + len + vLen <= textToProcess.length) {
+              let vSub = textToProcess.slice(i + len, i + len + vLen).toLowerCase();
               if (vowelSignMap[vSub] !== undefined) {
                 nextVowel = vSub;
                 vowelLen = vLen;
@@ -981,8 +997,8 @@ function transliterateIASTtoTamil(text) {
           
           let baseCons = consonantMap[sub];
           if (sub === 'n') {
-            let isWordStart = (i === 0 || /\s/.test(text[i-1]));
-            let nextSub = text.slice(i + len, i + len + 2).toLowerCase();
+            let isWordStart = (i === 0 || /\s/.test(textToProcess[i-1]));
+            let nextSub = textToProcess.slice(i + len, i + len + 2).toLowerCase();
             let isDental = /^(t|d)/.test(nextSub);
             baseCons = (isWordStart || isDental) ? 'ந' : 'ன';
           }
@@ -1004,8 +1020,8 @@ function transliterateIASTtoTamil(text) {
     
     // 2. Try to match standalone vowel
     for (let len of [2, 1]) {
-      if (i + len <= text.length) {
-        let sub = text.slice(i, i + len).toLowerCase();
+      if (i + len <= textToProcess.length) {
+        let sub = textToProcess.slice(i, i + len).toLowerCase();
         if (vowelMap[sub] !== undefined) {
           result += vowelMap[sub];
           i += len;
@@ -1018,7 +1034,7 @@ function transliterateIASTtoTamil(text) {
     if (matched) continue;
     
     // 3. Special characters & punctuation
-    let char = text[i];
+    let char = textToProcess[i];
     if (char === 'ṃ' || char === 'ṁ') {
       result += 'ம்';
       i += 1;
@@ -1031,6 +1047,11 @@ function transliterateIASTtoTamil(text) {
     }
   }
   return result;
+}
+
+// To prevent reprocessing in loop, we keep this wrapper
+function transliterateIASTtoTamilWrapper(text) {
+  return transliterateIASTtoTamil(text);
 }
 
 // ----------------------------------------------------
