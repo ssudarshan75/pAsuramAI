@@ -996,7 +996,25 @@ function transliterateIASTtoTamil(text) {
           }
           
           let baseCons = consonantMap[sub];
-          if (sub === 'n') {
+          if (sub === 'ś') {
+            let nextSub = textToProcess.slice(i + len, i + len + 1).toLowerCase();
+            baseCons = (nextSub === 'r') ? 'ஶ' : 'ச';
+          } else if (sub === 'd') {
+            let isPrecededByN = (i > 0 && textToProcess[i-1].toLowerCase() === 'ṇ');
+            if (isPrecededByN) {
+              baseCons = 'ட';
+            }
+          } else if (sub === 'ṭ') {
+            let nextSub = textToProcess.slice(i + len, i + len + 1).toLowerCase();
+            if (nextSub === 'r') {
+              baseCons = 'ற';
+            }
+          } else if (sub === 'r') {
+            let prevChar = (i > 0) ? textToProcess[i-1].toLowerCase() : '';
+            if (prevChar === 'ṭ' || prevChar === 'ṟ') {
+              baseCons = 'ற';
+            }
+          } else if (sub === 'n') {
             let isWordStart = (i === 0 || /\s/.test(textToProcess[i-1]));
             let nextSub = textToProcess.slice(i + len, i + len + 2).toLowerCase();
             let isDental = /^(t|d)/.test(nextSub);
