@@ -705,42 +705,9 @@ function appendDesikaTaniyanIfNeeded() {
   }
 }
 
-function appendHymnTitleHeaderIfNeeded() {
-  if (currentVersesList.length === 0) return;
-  const first = currentVersesList[0];
-  
-  let hName = first.hymn_name;
-  let compName = first.alvar || first.composer || "Various Composers";
-  if (currentLanguage === 'tamil') {
-    hName = transliterateIASTtoTamil(hName);
-    compName = transliterateIASTtoTamil(compName);
-  }
-  
-  const titleCard = document.createElement('div');
-  titleCard.className = 'hymn-title-header-card';
-  titleCard.style.cssText = `
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 16px 8px;
-    border-bottom: 2px solid rgba(217, 167, 74, 0.15);
-  `;
-  
-  titleCard.innerHTML = `
-    <h1 style="font-size: 28px; font-weight: 700; color: var(--accent-gold); margin: 0 0 6px 0; font-family: 'Outfit', sans-serif; letter-spacing: 0.5px;">
-      ${hName}
-    </h1>
-    <div style="font-size: 14px; color: var(--text-secondary); font-family: 'Inter', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
-      ${compName}
-    </div>
-  `;
-  
-  versesList.appendChild(titleCard);
-}
-
 function renderVersesIncremental(isReRender = false) {
   versesList.innerHTML = '';
   updateReaderHeader();
-  appendHymnTitleHeaderIfNeeded();
   appendDesikaTaniyanIfNeeded();
   
   for (let i = 0; i < currentVersesList.length; i++) {
