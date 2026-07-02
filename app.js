@@ -738,34 +738,17 @@ function appendHymnTitleHeaderIfNeeded() {
 }
 
 function renderVersesIncremental(isReRender = false) {
-  if (isReRender) {
-    versesList.innerHTML = '';
-    updateReaderHeader();
-    appendHymnTitleHeaderIfNeeded();
-    appendDesikaTaniyanIfNeeded();
-    const limit = displayedVersesCount;
-    for (let i = 0; i < limit; i++) {
-      appendVerseCard(currentVersesList[i]);
-    }
-  } else {
-    const start = displayedVersesCount;
-    if (start === 0) {
-      appendHymnTitleHeaderIfNeeded();
-      appendDesikaTaniyanIfNeeded();
-    }
-    const end = Math.min(start + VERSES_PAGE_SIZE, currentVersesList.length);
-    
-    for (let i = start; i < end; i++) {
-      appendVerseCard(currentVersesList[i]);
-      displayedVersesCount++;
-    }
-  }
+  versesList.innerHTML = '';
+  updateReaderHeader();
+  appendHymnTitleHeaderIfNeeded();
+  appendDesikaTaniyanIfNeeded();
   
-  if (displayedVersesCount < currentVersesList.length) {
-    loadMoreContainer.classList.remove('hidden');
-  } else {
-    loadMoreContainer.classList.add('hidden');
+  for (let i = 0; i < currentVersesList.length; i++) {
+    appendVerseCard(currentVersesList[i]);
   }
+  displayedVersesCount = currentVersesList.length;
+  
+  loadMoreContainer.classList.add('hidden');
 }
 
 function appendVerseCard(verse) {
