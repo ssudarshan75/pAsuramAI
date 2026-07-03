@@ -890,70 +890,76 @@ function appendVerseCard(verse) {
     }
   });
 
-  playBtn.addEventListener('click', async (e) => {
+  playBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     
-    if (activePlayBtn === playBtn && activeAudio) {
-      activeAudio.pause();
+    // If clicking the currently playing button, stop it
+    if (activePlayBtn === playBtn) {
+      window.speechSynthesis.cancel();
       resetPlayBtn(playBtn);
-      activeAudio = null;
       activePlayBtn = null;
       return;
     }
     
-    if (activeAudio) {
-      activeAudio.pause();
-      if (activePlayBtn) {
-        resetPlayBtn(activePlayBtn);
-      }
+    // Cancel any active speech
+    window.speechSynthesis.cancel();
+    if (activePlayBtn) {
+      resetPlayBtn(activePlayBtn);
     }
     
-    setPlayBtnLoading(playBtn);
+    setPlayBtnPlaying(playBtn);
     activePlayBtn = playBtn;
     
-    try {
-      const response = await fetch('/api/synthesize', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: verse.original })
-      });
-      
-      const data = await response.json();
-      if (data.error) {
-        throw new Error(data.error);
-      }
-      
-      const audio = new Audio(data.audio);
-      activeAudio = audio;
-      
-      setPlayBtnPlaying(playBtn);
-      
-      audio.onended = () => {
-        resetPlayBtn(playBtn);
-        if (activeAudio === audio) {
-          activeAudio = null;
-          activePlayBtn = null;
-        }
-      };
-      
-      audio.onerror = () => {
-        resetPlayBtn(playBtn);
-        if (activeAudio === audio) {
-          activeAudio = null;
-          activePlayBtn = null;
-        }
-        alert("Could not play chant. Please try again.");
-      };
-      
-      await audio.play();
-      
-    } catch (err) {
-      console.error(err);
-      resetPlayBtn(playBtn);
-      activeAudio = null;
-      activePlayBtn = null;
-      alert("Chant generation failed: " + err.message);
+    // Determine database type to select language and voice
+    const isStotram = (verse.hymn_id.includes('desika') && !verse.hymn_id.includes('prabandham')) || 
+                      verse.hymn_id.includes('dasavatara') || 
+                      verse.hymn_id.includes('stotra') || 
+                      verse.hymn_id.includes('vaishnava');
+                      
+    let speakText = "";
+    let langCode = "ta-IN"; // default to Tamil
+    
+    if (isStotram) {
+      // For Sanskrit, convert to Devanagari and use Hindi/Sanskrit voice
+      speakText = transliterateIASTtoDevanagari(verse.original);
+      langCode = "hi-IN";
+    } else {
+      // For Tamil (Prabandhams), convert to Tamil script
+      speakText = transliterateIASTtoTamil(verse.original);
+      // Clean up split symbols and numbers
+      speakText = speakText.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
+      speakText = speakText.replace(/⋆/g, '').replace(/‡/g, '');
+      langCode = "ta-IN";
     }
+    
+    const utterance = new SpeechSynthesisUtterance(speakText);
+    utterance.lang = langCode;
+    utterance.rate = 0.80; // Chanting/recital pace
+    utterance.pitch = 1.0;
+    
+    // Select matching local voice
+    const voices = window.speechSynthesis.getVoices();
+    const matchingVoice = voices.find(v => v.lang.startsWith(langCode.substring(0, 2)) && v.localService);
+    if (matchingVoice) {
+      utterance.voice = matchingVoice;
+    }
+    
+    utterance.onend = () => {
+      resetPlayBtn(playBtn);
+      if (activePlayBtn === playBtn) {
+        activePlayBtn = null;
+      }
+    };
+    
+    utterance.onerror = (err) => {
+      console.error("TTS Error:", err);
+      resetPlayBtn(playBtn);
+      if (activePlayBtn === playBtn) {
+        activePlayBtn = null;
+      }
+    };
+    
+    window.speechSynthesis.speak(utterance);
   });
   
   cardDiv.appendChild(playBtn);
@@ -1222,6 +1228,119 @@ function transliterateIASTtoTamil(text) {
 // To prevent reprocessing in loop, we keep this wrapper
 function transliterateIASTtoTamilWrapper(text) {
   return transliterateIASTtoTamil(text);
+}
+
+function transliterateIASTtoDevanagari(text) {
+  if (!text) return "";
+  let result = text.toLowerCase();
+  
+  // Clean up punctuation/verse markers
+  result = result.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
+  result = result.replace(/⋆/g, '').replace(/‡/g, '');
+  
+  const vowels = {
+    'ai': 'ऐ', 'au': 'औ', 'ā': 'आ', 'ī': 'ई', 'ū': 'ऊ',
+    'e': 'ए', 'o': 'ओ', 'a': 'अ', 'i': 'इ', 'u': 'उ',
+    'r̥': 'ऋ', 'l̥': 'ऌ'
+  };
+  
+  const vowelSigns = {
+    'ai': 'ै', 'au': 'ौ', 'ā': 'ा', 'ī': 'ी', 'ū': 'ू',
+    'e': 'े', 'o': 'ो', 'i': 'ि', 'u': 'ु', 'r̥': 'ृ', 'l̥': 'ॢ'
+  };
+  
+  const consonants = {
+    'kh': 'ख', 'gh': 'घ', 'ch': 'छ', 'jh': 'झ', 'ṭh': 'ठ', 'ḍh': 'ढ', 'th': 'थ', 'dh': 'ध', 'ph': 'फ', 'bh': 'भ',
+    'k': 'क', 'g': 'ग', 'ṅ': 'ङ', 'c': 'च', 'j': 'ज', 'ñ': 'ञ', 'ṭ': 'ट', 'ḍ': 'ड', 'ṇ': 'ण',
+    't': 'त', 'd': 'द', 'n': 'न', 'p': 'प', 'b': 'ब', 'm': 'म',
+    'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'ś': 'श', 'ṣ': 'ष', 's': 'स', 'h': 'ह', 'l̤': 'ळ'
+  };
+  
+  // Normalization
+  result = result.replace(/ō/g, 'o').replace(/ē/g, 'e').replace(/ṃ/g, 'ṁ').replace(/ḥ/g, 'ः');
+  
+  let i = 0;
+  let out = "";
+  while (i < result.length) {
+    if (/\s/.test(result[i])) {
+      out += result[i];
+      i++;
+      continue;
+    }
+    if (/[.,!?;:|॥\-]/.test(result[i])) {
+      out += result[i];
+      i++;
+      continue;
+    }
+    
+    let foundCons = false;
+    let consLen = 0;
+    let consChar = "";
+    
+    if (i + 1 < result.length && consonants[result.substr(i, 2)]) {
+      consChar = consonants[result.substr(i, 2)];
+      consLen = 2;
+      foundCons = true;
+    } else if (consonants[result[i]]) {
+      consChar = consonants[result[i]];
+      consLen = 1;
+      foundCons = true;
+    }
+    
+    if (foundCons) {
+      out += consChar;
+      i += consLen;
+      
+      let foundVowel = false;
+      let vowelLen = 0;
+      
+      if (i + 2 <= result.length && vowelSigns[result.substr(i, 2)]) {
+        out += vowelSigns[result.substr(i, 2)];
+        vowelLen = 2;
+        foundVowel = true;
+      } else if (i + 1 <= result.length && vowelSigns[result[i]]) {
+        out += vowelSigns[result[i]];
+        vowelLen = 1;
+        foundVowel = true;
+      } else if (i + 1 <= result.length && result[i] === 'a') {
+        vowelLen = 1;
+        foundVowel = true;
+      }
+      
+      if (foundVowel) {
+        i += vowelLen;
+      } else {
+        out += '्';
+      }
+    } else {
+      let foundVowel = false;
+      let vowelLen = 0;
+      
+      if (i + 2 <= result.length && vowels[result.substr(i, 2)]) {
+        out += vowels[result.substr(i, 2)];
+        vowelLen = 2;
+        foundVowel = true;
+      } else if (i + 1 <= result.length && vowels[result[i]]) {
+        out += vowels[result[i]];
+        vowelLen = 1;
+        foundVowel = true;
+      }
+      
+      if (foundVowel) {
+        i += vowelLen;
+      } else {
+        if (result[i] === 'ṁ' || result[i] === 'ṃ') {
+          out += 'ं';
+        } else {
+          out += result[i];
+        }
+        i++;
+      }
+    }
+  }
+  
+  out = out.replace(/्ं/g, 'ं').replace(/्ः/g, 'ः').replace(/््/g, '्');
+  return out;
 }
 
 // ----------------------------------------------------

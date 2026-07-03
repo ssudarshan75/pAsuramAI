@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p www && cp index.html index.css app.js manifest.json www/ && cp -R data www/"
+    "build": "mkdir -p www && cp index.html index.css app.js manifest.json www/ && cp -R data www/ && (cp -R audio www/ || true)"
   },
   "repository": {
     "type": "git",
