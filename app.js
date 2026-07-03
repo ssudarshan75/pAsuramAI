@@ -48,6 +48,45 @@ let chantingFontSize = localStorage.getItem('chanting_font_size') || '17.5px';
 let chantingFontFamily = localStorage.getItem('chanting_font_family') || "'Outfit', sans-serif";
 let appTheme = localStorage.getItem('app_theme') || 'midnight';
 
+// Active Chanting Audio State (Vāgdhenu TTS integration)
+let activeAudio = null;
+let activePlayBtn = null;
+
+const SPEAKER_SVG = `
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+  </svg>
+`;
+
+const PAUSE_SVG = `
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="4" width="4" height="16"></rect>
+    <rect x="14" y="4" width="4" height="16"></rect>
+  </svg>
+`;
+
+function resetPlayBtn(btn) {
+  btn.innerHTML = SPEAKER_SVG;
+  btn.classList.remove('loading', 'playing');
+  btn.style.borderColor = 'var(--bg-card-border)';
+  btn.style.color = 'var(--text-secondary)';
+}
+
+function setPlayBtnLoading(btn) {
+  btn.innerHTML = '<div class="voice-spinner"></div>';
+  btn.classList.add('loading');
+  btn.style.borderColor = 'var(--accent-gold)';
+}
+
+function setPlayBtnPlaying(btn) {
+  btn.innerHTML = PAUSE_SVG;
+  btn.classList.remove('loading');
+  btn.classList.add('playing');
+  btn.style.borderColor = 'var(--accent-gold)';
+  btn.style.color = 'var(--accent-gold)';
+}
+
 // Apply initial settings
 document.body.className = appTheme === 'midnight' ? '' : 'theme-' + appTheme;
 
@@ -721,6 +760,8 @@ function renderVersesIncremental(isReRender = false) {
 function appendVerseCard(verse) {
   const cardDiv = document.createElement('div');
   cardDiv.className = 'verse-card';
+  cardDiv.style.position = 'relative';
+  cardDiv.style.paddingRight = '42px';
   
   const meta = document.createElement('div');
   meta.className = 'verse-meta';
@@ -805,6 +846,117 @@ function appendVerseCard(verse) {
   }
   
   cardDiv.appendChild(textBox);
+
+  // Create voice play button
+  const playBtn = document.createElement('button');
+  playBtn.className = 'verse-play-btn';
+  playBtn.innerHTML = SPEAKER_SVG;
+  playBtn.title = "Chant this verse";
+  playBtn.style.cssText = `
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--bg-card-border);
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    z-index: 5;
+  `;
+  
+  // Hover & Active effects
+  playBtn.addEventListener('mouseenter', () => {
+    if (!playBtn.classList.contains('loading') && !playBtn.classList.contains('playing')) {
+      playBtn.style.background = 'rgba(217, 167, 74, 0.08)';
+      playBtn.style.borderColor = 'var(--accent-gold)';
+      playBtn.style.color = 'var(--accent-gold)';
+      playBtn.style.transform = 'translateY(-50%) scale(1.08)';
+    }
+  });
+  playBtn.addEventListener('mouseleave', () => {
+    if (!playBtn.classList.contains('loading') && !playBtn.classList.contains('playing')) {
+      playBtn.style.background = 'rgba(255, 255, 255, 0.03)';
+      playBtn.style.borderColor = 'var(--bg-card-border)';
+      playBtn.style.color = 'var(--text-secondary)';
+      playBtn.style.transform = 'translateY(-50%) scale(1)';
+    }
+  });
+
+  playBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    
+    if (activePlayBtn === playBtn && activeAudio) {
+      activeAudio.pause();
+      resetPlayBtn(playBtn);
+      activeAudio = null;
+      activePlayBtn = null;
+      return;
+    }
+    
+    if (activeAudio) {
+      activeAudio.pause();
+      if (activePlayBtn) {
+        resetPlayBtn(activePlayBtn);
+      }
+    }
+    
+    setPlayBtnLoading(playBtn);
+    activePlayBtn = playBtn;
+    
+    try {
+      const response = await fetch('/api/synthesize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: verse.original })
+      });
+      
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      
+      const audio = new Audio(data.audio);
+      activeAudio = audio;
+      
+      setPlayBtnPlaying(playBtn);
+      
+      audio.onended = () => {
+        resetPlayBtn(playBtn);
+        if (activeAudio === audio) {
+          activeAudio = null;
+          activePlayBtn = null;
+        }
+      };
+      
+      audio.onerror = () => {
+        resetPlayBtn(playBtn);
+        if (activeAudio === audio) {
+          activeAudio = null;
+          activePlayBtn = null;
+        }
+        alert("Could not play chant. Please try again.");
+      };
+      
+      await audio.play();
+      
+    } catch (err) {
+      console.error(err);
+      resetPlayBtn(playBtn);
+      activeAudio = null;
+      activePlayBtn = null;
+      alert("Chant generation failed: " + err.message);
+    }
+  });
+  
+  cardDiv.appendChild(playBtn);
   versesList.appendChild(cardDiv);
 }
 

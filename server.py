@@ -415,6 +415,60 @@ class APIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(json.dumps(response_payload).encode('utf-8'))
+        elif self.path == '/api/synthesize':
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            request_json = json.loads(post_data.decode('utf-8'))
+            verse_text = request_json.get('text', '').strip()
+            
+            print(f"Received Chanting Request for: '{verse_text[:40]}...'")
+            
+            response_payload = {"error": "Unknown error" }
+            try:
+                import re
+                cleaned_text = re.sub(r'\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$', '', verse_text)
+                cleaned_text = cleaned_text.replace('⋆', '').replace('‡', '')
+                
+                normalized_text = cleaned_text.replace('ō', 'o').replace('ē', 'e').replace('ṃ', 'ṁ')
+                from indic_transliteration import sanscript
+                devanagari_text = sanscript.transliterate(normalized_text, sanscript.IAST, sanscript.DEVANAGARI)
+                
+                from gradio_client import Client
+                print("Connecting to Hugging Face prathoshap/vagdhenu-demo Space...")
+                client = Client("prathoshap/vagdhenu-demo")
+                result = client.predict(
+                    devanagari_text,  # txt
+                    "__auto__",       # meter_choice
+                    60,               # seed
+                    api_name="/synthesize"
+                )
+                
+                wav_path = result[0]
+                status_msg = result[1]
+                
+                import base64
+                with open(wav_path, "rb") as audio_file:
+                    encoded_string = base64.b64encode(audio_file.read()).decode('utf-8')
+                
+                try:
+                    os.remove(wav_path)
+                except Exception:
+                    pass
+                
+                response_payload = {
+                    "audio": f"data:audio/wav;base64,{encoded_string}",
+                    "status": status_msg
+                }
+                
+            except Exception as e:
+                print(f"Error during Vāgdhenu voice synthesis: {e}")
+                response_payload = {"error": str(e)}
+                
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps(response_payload).encode('utf-8'))
         else:
             super().do_POST()
 
