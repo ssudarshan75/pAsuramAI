@@ -71,6 +71,8 @@ class handler(BaseHTTPRequestHandler):
             "pavai": "tiruppaavai",
             "dashaavatara": "dashaavataarastotram",
             "dashavatara": "dashaavataarastotram",
+            "hanumanstuti": "hanumanstuti",
+            "hanumanstuthi": "hanumanstuti",
             "hanuman": "hanumaanachaaliisaa",
             "chalisa": "hanumaanachaaliisaa",
             "narasimha": "narasimhakavacham",

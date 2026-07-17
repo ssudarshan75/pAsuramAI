@@ -39,8 +39,8 @@ OFFLINE_PALLANDU = [
     "alvar": "Periyāzhvār",
     "original": "Pallāṇḍu pallāṇḍu pallāyirattāṇḍu pala kōḍi nūrāyiram\nMallāṇḍa tiṇdōl maṇivaṇṇā! un śēvaḍi śevvi tirukkāppu",
     "split_lines": [
-      "Pallāṇḍu | pallāṇḍu | pallā-yirattāṇḍu | pala | kōḍi | nūrāyiram",
-      "Mallāṇḍa | tiṇdōl | maṇi-vaṇṇā | un | śēvaḍi | śevvi | tirukkāppu"
+      "Pallāṇḍu | pallāṇḍu | pallāyirattāṇḍu | pala | kōḍi | nūrāyiram",
+      "Mallāṇḍa | tiṇdōl | maṇivaṇṇā | un | śēvaḍi | śevvi | tirukkāppu"
     ]
   },
   {
@@ -51,8 +51,8 @@ OFFLINE_PALLANDU = [
     "split_lines": [
       "Aḍiyōmōḍum | ninnōḍum | pirivinṛi | āyiram | pallāṇḍu",
       "Vaḍivay | nin | vala | mārbinil | vāzginra | maṅgaiyum | pallāṇḍu",
-      "Vaḍivār | śōdi | valatturaiyum | śuḍar-āziyum | pallāṇḍu",
-      "Paḍai | pōr | pukku | muzaṅgum | ap-pāñcaśanniyamum | pallāṇḍē"
+      "Vaḍivār | śōdi | valatturaiyum | śuḍarāziyum | pallāṇḍu",
+      "Paḍai | pōr | pukku | muzaṅgum | appāñcaśanniyamum | pallāṇḍē"
     ]
   },
   {
@@ -61,10 +61,10 @@ OFFLINE_PALLANDU = [
     "alvar": "Periyāzhvār",
     "original": "Vāzāṭ paṭṭu ninṛīr ullīrēl vandu maṇṇum maṇamum koṇmin\nKūzāṭ paṭṭu ninrīrgalai engaḷ kuzuvinil pugudaloṭṭōm\nĒzāṭ kālum pazippilōm nāṅgal irākkadar vāz ilaṅgai\nPāzāḷāga ppaḍai porudānukku pallāṇḍu kūrudumē",
     "split_lines": [
-      "Vāz-āṭ | paṭṭu | ninṛīr | ullīrēl | vandu | maṇṇum | maṇamum | koṇmin",
-      "Kūz-āṭ | paṭṭu | ninrīrgalai | engaḷ | kuzuvinil | pugudal | oṭṭōm",
-      "Ēz-āṭ | kālum | pazippilōm | nāṅgal | irākkadar | vāz | ilaṅgai",
-      "Pāz-āḷāga | paḍai | porudānukku | pallāṇḍu | kūrudumē"
+      "Vāzāṭ | paṭṭu | ninṛīr | ullīrēl | vandu | maṇṇum | maṇamum | koṇmin",
+      "Kūzāṭ | paṭṭu | ninrīrgalai | engaḷ | kuzuvinil | pugudal | oṭṭōm",
+      "Ēzāṭ | kālum | pazippilōm | nāṅgal | irākkadar | vāz | ilaṅgai",
+      "Pāzāḷāga | paḍai | porudānukku | pallāṇḍu | kūrudumē"
     ]
   },
   {
@@ -334,6 +334,8 @@ class APIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     "pavai": "tiruppaavai",
                     "dashaavatara": "dashaavataarastotram",
                     "dashavatara": "dashaavataarastotram",
+                    "hanumanstuti": "hanumanstuti",
+                    "hanumanstuthi": "hanumanstuti",
                     "hanuman": "hanumaanachaaliisaa",
                     "chalisa": "hanumaanachaaliisaa",
                     "narasimha": "narasimhakavacham",

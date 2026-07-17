@@ -1252,11 +1252,13 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 1,
-    "title": "Verse 1",
-    "original": "dēvō naḥ śubhamātanōtu daśadhā nirvartayan bhūmikāṁ raṅgē dhāmani labdhanirbhararasairadhyakṣitō bhāvukaiḥ\nyadbhāvēṣu pr̥thagvidhēṣvanuguṇān bhāvān svayaṁ bibhratī yaddharmairiha dharmiṇī viharatē nānākr̥tirnāyikā",
+    "original": "śrīdaśāvatārastōtram\ndēvō naḥ śubhamātanōtu daśadhā nirvartayan bhūmikāṃ\nraṅgē dhāmani labdhanirbhararasairadhyakṣitō bhāvukaiḥ\nyadbhāvēṣu pṛthagvidhēṣvanuguṇān bhāvān svayaṃ bibhratī\nyaddharmairiha dharmiṇī viharatē nānākṛtirnāyikā",
     "split_lines": [
-      "dēvō naḥ śubhamātanōtu daśadhā nirvartayan bhūmikāṁ raṅgē dhāmani labdhanirbhararasairadhyakṣitō bhāvukaiḥ",
-      "yadbhāvēṣu pr̥thagvidhēṣvanuguṇān bhāvān svayaṁ bibhratī yaddharmairiha dharmiṇī viharatē nānākr̥tirnāyikā"
+      "śrīdaśāvatārastōtram",
+      "dēvō | naḥ | śubhamātanōtu | daśadhā | nirvartayan | bhūmikāṃ",
+      "raṅgē | dhāmani | labdhanirbhararasairadhyakṣitō | bhāvukaiḥ",
+      "yadbhāvēṣu | pṛthagvidhēṣvanuguṇān | bhāvān | svayaṃ | bibhratī",
+      "yaddharmairiha | dharmiṇī | viharatē | nānākṛtirnāyikā"
     ]
   },
   {
@@ -1266,11 +1268,12 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 2,
-    "title": "Verse 2",
-    "original": "nirmagnaśrutijālamārgaṇadaśādattakṣaṇairvīkṣaṇai-rantastanvadivāravindamahanānyaudanvatīnāmapām\nniṣpratyūhataraṅgariṅgaṇamithaḥ pratyūḍhapāthaśchaṭā-ḍōlārōhasadōhalaṁ bhagavatō mātsyaṁ vapuḥ pātu naḥ",
+    "original": "nirmagnaśrutijālamārgaṇadaśādattakṣaṇairvīkṣaṇaiḥ\nantastanvadivāravindagahanānyaudanvatīnāmapām\nniṣpratyūhataraṅgariṅgaṇamithaḥpratyūḍhapāthaśchaṭā -\nḍōlārōhasadōhaḻaṃ bhagavatō mātsyaṃ vapuḥ pātu naḥ",
     "split_lines": [
-      "nirmagnaśrutijālamārgaṇadaśādattakṣaṇairvīkṣaṇai-rantastanvadivāravindamahanānyaudanvatīnāmapām",
-      "niṣpratyūhataraṅgariṅgaṇamithaḥ pratyūḍhapāthaśchaṭā-ḍōlārōhasadōhalaṁ bhagavatō mātsyaṁ vapuḥ pātu naḥ"
+      "nirmagnaśrutijālamārgaṇadaśādattakṣaṇairvīkṣaṇaiḥ",
+      "antastanvadivāravindagahanānyaudanvatīnāmapām",
+      "niṣpratyūhataraṅgariṅgaṇamithaḥpratyūḍhapāthaśchaṭā",
+      "ḍōlārōhasadōhaḻaṃ | bhagavatō | mātsyaṃ | vapuḥ | pātu | naḥ"
     ]
   },
   {
@@ -1280,11 +1283,12 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 3,
-    "title": "Verse 3",
-    "original": "avyāsurbhuvanatrayīmanibhr̥taṁ kaṇḍūyanairadriṇā nidrāṇasya parasya kūrmavapuṣō niḥśvāsavātōrmayaḥ\nyadvikṣēpaṇasaṁskr̥tōdadhipayaḥ prēṅkhōlaparyaṅkikā-nityārōhaṇanirvr̥tō viharatē dēvaḥ sahaiva śriyā",
+    "original": "avyāsurbhuvanatrayīmanibhṛtaṃ kaṇḍūyanairadriṇā\nnidrāṇasya parasya kūrmavapuṣō niḥśvāsavātōrmayaḥ\nyadvikṣēpaṇasaṃskṛtōdadhipayaḥprēṅkhōḻaparyaṅkikā -\nnityārōhaṇanirvṛtō viharatē dēvaḥ sahaiva śriyā",
     "split_lines": [
-      "avyāsurbhuvanatrayīmanibhr̥taṁ kaṇḍūyanairadriṇā nidrāṇasya parasya kūrmavapuṣō niḥśvāsavātōrmayaḥ",
-      "yadvikṣēpaṇasaṁskr̥tōdadhipayaḥ prēṅkhōlaparyaṅkikā-nityārōhaṇanirvr̥tō viharatē dēvaḥ sahaiva śriyā"
+      "avyāsurbhuvanatrayīmanibhṛtaṃ | kaṇḍūyanairadriṇā",
+      "nidrāṇasya | parasya | kūrmavapuṣō | niḥśvāsavātōrmayaḥ",
+      "yadvikṣēpaṇasaṃskṛtōdadhipayaḥprēṅkhōḻaparyaṅkikā",
+      "nityārōhaṇanirvṛtō | viharatē | dēvaḥ | sahaiva | śriyā"
     ]
   },
   {
@@ -1294,11 +1298,16 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 4,
-    "title": "Verse 4",
-    "original": "gōpāyēdaniśaṁ jaganti kuhanāpōtrī pavitrīkr̥ta-brahmāṇḍaḥ pralayōrmighōṣagurubhirghōṇāravairghurghuraiḥ\nyaddaṁṣṭrāṅkurakōṭigāḍhaghaṭanāniṣkampanityasthiti-rbrahmastambamasaudasau bhagavatī mustēva viśvambharā",
+    "original": "gōpāyēdaniśaṃ jaganti kuhanā -\npōtrī pavitrīkṛta -\nbrahmāṇḍaḥ praḻayōrmighōṣagurubhi -\nrghōṇāravairghurghuraiḥ\nyaddaṃṣṭrāṅkurakōṭigāḍhaghaṭanā -\nniṣkampanityasthitiḥ\nbrahmastambamasaudasau bhagavatī\nmustēva viśvambharā",
     "split_lines": [
-      "gōpāyēdaniśaṁ jaganti kuhanāpōtrī pavitrīkr̥ta-brahmāṇḍaḥ pralayōrmighōṣagurubhirghōṇāravairghurghuraiḥ",
-      "yaddaṁṣṭrāṅkurakōṭigāḍhaghaṭanāniṣkampanityasthiti-rbrahmastambamasaudasau bhagavatī mustēva viśvambharā"
+      "gōpāyēdaniśaṃ | jaganti | kuhanā",
+      "pōtrī | pavitrīkṛta",
+      "brahmāṇḍaḥ | praḻayōrmighōṣagurubhi",
+      "rghōṇāravairghurghuraiḥ",
+      "yaddaṃṣṭrāṅkurakōṭigāḍhaghaṭanā",
+      "niṣkampanityasthitiḥ",
+      "brahmastambamasaudasau | bhagavatī",
+      "mustēva | viśvambharā"
     ]
   },
   {
@@ -1308,11 +1317,12 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 5,
-    "title": "Verse 5",
-    "original": "pratyādiṣṭapurātanapraharaṇagrāmaḥ kṣaṇaṁ pāṇijai-ravyāt trīṇi jagantyakuṇṭhamahimā vaikuṇṭhakaṇṭhīravaḥ\nyatprādurbhavanādavandhyajaṭharā yādr̥cchikādvēdhasāṁ yā kācit sahasā mahāsuragr̥hasthūṇā pitāmahyabhūt",
+    "original": "pratyādiṣṭapurātanapraharaṇagrāmaḥ kṣaṇaṃ pāṇijaiḥ\navyāt trīṇi jagantyakuṇṭhamahimā vaikuṇṭhakaṇṭhīravaḥ\nyatprādurbhavanādavandhyajaṭharā yādṛcchikādvēdhasāṃ\nyā kācit sahasā mahāsuragṛhasthūṇā pitāmahyabhūt",
     "split_lines": [
-      "pratyādiṣṭapurātanapraharaṇagrāmaḥ kṣaṇaṁ pāṇijai-ravyāt trīṇi jagantyakuṇṭhamahimā vaikuṇṭhakaṇṭhīravaḥ",
-      "yatprādurbhavanādavandhyajaṭharā yādr̥cchikādvēdhasāṁ yā kācit sahasā mahāsuragr̥hasthūṇā pitāmahyabhūt"
+      "pratyādiṣṭapurātanapraharaṇagrāmaḥ | kṣaṇaṃ | pāṇijaiḥ",
+      "avyāt | trīṇi | jagantyakuṇṭhamahimā | vaikuṇṭhakaṇṭhīravaḥ",
+      "yatprādurbhavanādavandhyajaṭharā | yādṛcchikādvēdhasāṃ",
+      "yā | kācit | sahasā | mahāsuragṛhasthūṇā | pitāmahyabhūt"
     ]
   },
   {
@@ -1322,11 +1332,12 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 6,
-    "title": "Verse 6",
-    "original": "vrīḍāviddhavadānyadānavayaśōnāsīradhāṭībhaṭaḥ traiyakṣaṁ mukuṭaṁ punannavatu nastraivikramō vikramaḥ\nyatprastāvasamucchritadhvajapaṭīvr̥ttāntasiddhāntibhiḥ srōtōbhiḥ surasindhuraṣṭasu diśāsaudhēṣu dōdhūyatē",
+    "original": "vrīḍāviddhavadānyadānavayaśōnāsīradhāṭībhaṭaḥ\ntraiyakṣaṃ makuṭaṃ punannavatu nastraivikramō vikramaḥ\nyatprastāvasamucchritadhvajapaṭīvṛttāntasiddhāntibhiḥ\nsrōtōbhiḥ surasindhuraṣṭasu diśāsaudhēṣu dōdhūyatē",
     "split_lines": [
-      "vrīḍāviddhavadānyadānavayaśōnāsīradhāṭībhaṭaḥ traiyakṣaṁ mukuṭaṁ punannavatu nastraivikramō vikramaḥ",
-      "yatprastāvasamucchritadhvajapaṭīvr̥ttāntasiddhāntibhiḥ srōtōbhiḥ surasindhuraṣṭasu diśāsaudhēṣu dōdhūyatē"
+      "vrīḍāviddhavadānyadānavayaśōnāsīradhāṭībhaṭaḥ",
+      "traiyakṣaṃ | makuṭaṃ | punannavatu | nastraivikramō | vikramaḥ",
+      "yatprastāvasamucchritadhvajapaṭīvṛttāntasiddhāntibhiḥ",
+      "srōtōbhiḥ | surasindhuraṣṭasu | diśāsaudhēṣu | dōdhūyatē"
     ]
   },
   {
@@ -1336,11 +1347,12 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 7,
-    "title": "Verse 7",
-    "original": "krōdhāgniṁ jamadagnipīḍanabhavaṁ santarpayiṣyan kramā-dakṣatrāmiha santatakṣa ya imāṁ triḥsaptakr̥tvaḥ kṣitim\ndattvā karmaṇi dakṣiṇāṁ kvacana tāmāskandya sindhuṁ vasan abrahmaṇyamapākarōtu bhagavānābrahmakīṭaṁ muniḥ",
+    "original": "krōdhāgniṃ jamadagnipīḍanabhavaṃ santarpayiṣyan kramāt\nakṣatrāmiha santatakṣa ya imāṃ triḥsaptakṛtvaḥ kṣitim\ndattvā karmaṇi dakṣiṇāṃ kvacana tāmāskandya sindhuṃ vasan\nabrahmaṇyamapākarōtu bhagavānābrahmakīṭaṃ muniḥ",
     "split_lines": [
-      "krōdhāgniṁ jamadagnipīḍanabhavaṁ santarpayiṣyan kramā-dakṣatrāmiha santatakṣa ya imāṁ triḥsaptakr̥tvaḥ kṣitim",
-      "dattvā karmaṇi dakṣiṇāṁ kvacana tāmāskandya sindhuṁ vasan abrahmaṇyamapākarōtu bhagavānābrahmakīṭaṁ muniḥ"
+      "krōdhāgniṃ | jamadagnipīḍanabhavaṃ | santarpayiṣyan | kramāt",
+      "akṣatrāmiha | santatakṣa | ya | imāṃ | triḥsaptakṛtvaḥ | kṣitim",
+      "dattvā | karmaṇi | dakṣiṇāṃ | kvacana | tāmāskandya | sindhuṃ | vasan",
+      "abrahmaṇyamapākarōtu | bhagavānābrahmakīṭaṃ | muniḥ"
     ]
   },
   {
@@ -1350,11 +1362,16 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 8,
-    "title": "Verse 8",
-    "original": "pārāvārapayōviśōṣaṇakalāpārīṇakālānala-jvālājālavihārahāriviśikhavyāpāraghōrakramaḥ\nsarvāvasthasakr̥tprapannajanatāsaṁrakṣaṇaikavratī dharmō vigrahavānadharmaviratiṁ dhanvī sa tanvīta naḥ",
+    "original": "pārāvārapayōviśōṣaṇakalā -\npārīṇakālānala -\njvālājālavihārahāriviśikha -\nvyāpāraghōrakramaḥ\nsarvāvasthasakṛtprapannajanatā -\nsaṃrakṣaṇaikavratī\ndharmō vigrahavānadharmaviratiṃ\ndhanvī sa tanvīta naḥ",
     "split_lines": [
-      "pārāvārapayōviśōṣaṇakalāpārīṇakālānala-jvālājālavihārahāriviśikhavyāpāraghōrakramaḥ",
-      "sarvāvasthasakr̥tprapannajanatāsaṁrakṣaṇaikavratī dharmō vigrahavānadharmaviratiṁ dhanvī sa tanvīta naḥ"
+      "pārāvārapayōviśōṣaṇakalā",
+      "pārīṇakālānala",
+      "jvālājālavihārahāriviśikha",
+      "vyāpāraghōrakramaḥ",
+      "sarvāvasthasakṛtprapannajanatā",
+      "saṃrakṣaṇaikavratī",
+      "dharmō | vigrahavānadharmaviratiṃ",
+      "dhanvī | sa | tanvīta | naḥ"
     ]
   },
   {
@@ -1364,11 +1381,12 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 9,
-    "title": "Verse 9",
-    "original": "phakkatkauravapaṭ-ṭaṇaprabhr̥tayaḥ prāstapralambādaya-stālāṅkasya tathāvidhā vihr̥tayastanvantu bhadrāṇi naḥ\nkṣīraṁ śarkarayēva yābhirapr̥thagbhūtāḥ prabhūtairguṇai-rākaumārakamasvadanta jagatē kr̥ṣṇasya tāḥ kēlayaḥ",
+    "original": "phakkatkauravapaṭṭaṇaprabhṛtayaḥ prāstapralambādayaḥ\ntālāṅkasya tathāvidhā vihṛtayastanvantu bhadrāṇi naḥ\nkṣīraṃ śarkarayēva yābhirapṛthagbhūtāḥ prabhūtairguṇaiḥ\nākaumārakamasvadanta jagatē kṛṣṇasya tāḥ kēlayaḥ",
     "split_lines": [
-      "phakkatkauravapaṭ-ṭaṇaprabhr̥tayaḥ prāstapralambādaya-stālāṅkasya tathāvidhā vihr̥tayastanvantu bhadrāṇi naḥ",
-      "kṣīraṁ śarkarayēva yābhirapr̥thagbhūtāḥ prabhūtairguṇai-rākaumārakamasvadanta jagatē kr̥ṣṇasya tāḥ kēlayaḥ"
+      "phakkatkauravapaṭṭaṇaprabhṛtayaḥ | prāstapralambādayaḥ",
+      "tālāṅkasya | tathāvidhā | vihṛtayastanvantu | bhadrāṇi | naḥ",
+      "kṣīraṃ | śarkarayēva | yābhirapṛthagbhūtāḥ | prabhūtairguṇaiḥ",
+      "ākaumārakamasvadanta | jagatē | kṛṣṇasya | tāḥ | kēlayaḥ"
     ]
   },
   {
@@ -1378,11 +1396,12 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 10,
-    "title": "Verse 10",
-    "original": "nāthāyaiva namaḥ padaṁ bhavatu naścitraiścaritrakramai-rbhūyōbhirbhuvanānyamūni kuhanāgōpāya gōpāyatē\nkālindīrasikāya kāliyaphaṇisphārasphaṭāvāṭikā-raṅgōtsaṅgaviśaṅkacakramadhurāparyāyacaryāya tē",
+    "original": "nāthāyaiva namaḥpadaṃ bhavatu naścitraiścaritrakramaiḥ\nbhūyōbhirbhuvanānyamūni kuhanāgōpāya gōpāyatē\nkāḻindīrasikāya kāḻiyaphaṇisphārasphaṭāvāṭikā -\nraṅgōtsaṅgaviśaṅkacaṅkramadhurāparyāyacaryā yatē",
     "split_lines": [
-      "nāthāyaiva namaḥ padaṁ bhavatu naścitraiścaritrakramai-rbhūyōbhirbhuvanānyamūni kuhanāgōpāya gōpāyatē",
-      "kālindīrasikāya kāliyaphaṇisphārasphaṭāvāṭikā-raṅgōtsaṅgaviśaṅkacakramadhurāparyāyacaryāya tē"
+      "nāthāyaiva | namaḥpadaṃ | bhavatu | naścitraiścaritrakramaiḥ",
+      "bhūyōbhirbhuvanānyamūni | kuhanāgōpāya | gōpāyatē",
+      "kāḻindīrasikāya | kāḻiyaphaṇisphārasphaṭāvāṭikā",
+      "raṅgōtsaṅgaviśaṅkacaṅkramadhurāparyāyacaryā | yatē"
     ]
   },
   {
@@ -1392,11 +1411,16 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 11,
-    "title": "Verse 11",
-    "original": "bhāvinyā daśayā bhavanniha bhavadhvaṁsāya naḥ kalpatāṁ kalkī viṣṇuyaśaḥ sutaḥ kalikathākāluṣyakūlaṅkaṣaḥ\nniḥśēṣakṣatakaṇṭakē kṣititalē dhārājalaughairdhruvaṁ dharmaṁ kārtayugaṁ prarōhayati yannistriṁśadhārādharaḥ",
+    "original": "bhāvinyā daśayā bhavanniha bhava -\ndhvaṃsāya naḥ kalpatāṃ\nkalkī viṣṇuyaśassutaḥ kalikathā -\nkāluṣyakūlaṅkaṣaḥ\nniḥśēṣakṣatakaṇṭakē kṣititalē\ndhārājalaughairdhruvaṃ\ndharmaṃ kārtayugaṃ prarōhayati ya -\nnnistriṃśadhārādharaḥ",
     "split_lines": [
-      "bhāvinyā daśayā bhavanniha bhavadhvaṁsāya naḥ kalpatāṁ kalkī viṣṇuyaśaḥ sutaḥ kalikathākāluṣyakūlaṅkaṣaḥ",
-      "niḥśēṣakṣatakaṇṭakē kṣititalē dhārājalaughairdhruvaṁ dharmaṁ kārtayugaṁ prarōhayati yannistriṁśadhārādharaḥ"
+      "bhāvinyā | daśayā | bhavanniha | bhava",
+      "dhvaṃsāya | naḥ | kalpatāṃ",
+      "kalkī | viṣṇuyaśassutaḥ | kalikathā",
+      "kāluṣyakūlaṅkaṣaḥ",
+      "niḥśēṣakṣatakaṇṭakē | kṣititalē",
+      "dhārājalaughairdhruvaṃ",
+      "dharmaṃ | kārtayugaṃ | prarōhayati | ya",
+      "nnistriṃśadhārādharaḥ"
     ]
   },
   {
@@ -1406,11 +1430,16 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 12,
-    "title": "Verse 12",
-    "original": "icchāmīna vihārakacchapa mahāpōtrin yadr̥cchāharē rakṣāvāmana rōṣarāma karuṇākākutstha hēlāhalin\nkrīḍāvallava kalkavāhana daśākalkinniti pratyahaṁ jalpantaḥ puruṣāḥ punanti bhuvanaṁ puṇyaughapaṇyāpaṇāḥ",
+    "original": "icchāmīna vihārakacchapa mahā -\npōtrin yadṛcchāharē\nrakṣāvāmana rōṣarāma karuṇā -\nkākutstha hēlāhalin\nkrīḍāvallava kalkavāhanadaśā -\nkalkinniti pratyahaṃ\njalpantaḥ puruṣāḥ punanti bhuvanaṃ\npuṇyaughapaṇyāpaṇāḥ",
     "split_lines": [
-      "icchāmīna vihārakacchapa mahāpōtrin yadr̥cchāharē rakṣāvāmana rōṣarāma karuṇākākutstha hēlāhalin",
-      "krīḍāvallava kalkavāhana daśākalkinniti pratyahaṁ jalpantaḥ puruṣāḥ punanti bhuvanaṁ puṇyaughapaṇyāpaṇāḥ"
+      "icchāmīna | vihārakacchapa | mahā",
+      "pōtrin | yadṛcchāharē",
+      "rakṣāvāmana | rōṣarāma | karuṇā",
+      "kākutstha | hēlāhalin",
+      "krīḍāvallava | kalkavāhanadaśā",
+      "kalkinniti | pratyahaṃ",
+      "jalpantaḥ | puruṣāḥ | punanti | bhuvanaṃ",
+      "puṇyaughapaṇyāpaṇāḥ"
     ]
   },
   {
@@ -1420,11 +1449,16 @@
     "category": "Vaishnava Stotrams",
     "composer": "Swāmi Vedānta Deśika",
     "verse_number": 13,
-    "title": "Verse 13",
-    "original": "vidyōdanvati vēṅkaṭēśvarakavau jātaṁ jaganmaṅgalaṁ dēvēśasya daśāvatāraviṣayaṁ stōtraṁ vivakṣēta yaḥ\nvaktraṁ tasya sarasvatī bahumukhī bhaktiḥ parā mānasē śuddhiḥ kā:’pi tanau diśāsu daśasu khyātiḥ śubhā jr̥mbhatē",
+    "original": "vidyōdanvati vēṅkaṭēśvarakavau\njātaṃ jaganmaṅgaḻaṃ\ndēvēśasya daśāvatāraviṣayaṃ\nstōtraṃ vivakṣēta yaḥ\nvaktrē tasya sarasvatī bahumukhī\nbhaktiḥ parā mānasē\nśuddhiḥ kā’pi tanau diśāsu daśasu\nkhyātiḥ śubhā jṛmbhatē",
     "split_lines": [
-      "vidyōdanvati vēṅkaṭēśvarakavau jātaṁ jaganmaṅgalaṁ dēvēśasya daśāvatāraviṣayaṁ stōtraṁ vivakṣēta yaḥ",
-      "vaktraṁ tasya sarasvatī bahumukhī bhaktiḥ parā mānasē śuddhiḥ kā:’pi tanau diśāsu daśasu khyātiḥ śubhā jr̥mbhatē"
+      "vidyōdanvati | vēṅkaṭēśvarakavau",
+      "jātaṃ | jaganmaṅgaḻaṃ",
+      "dēvēśasya | daśāvatāraviṣayaṃ",
+      "stōtraṃ | vivakṣēta | yaḥ",
+      "vaktrē | tasya | sarasvatī | bahumukhī",
+      "bhaktiḥ | parā | mānasē",
+      "śuddhiḥ | kā’pi | tanau | diśāsu | daśasu",
+      "khyātiḥ | śubhā | jṛmbhatē"
     ]
   },
   {
@@ -2461,6 +2495,38 @@
     "original": "ōṃ śānti̠-śśānti̠-śśāntiḥ ।",
     "split_lines": [
       "ōṃ śānti̠-śśānti̠-śśāntiḥ"
+    ]
+  },
+  {
+    "id": "hanumanstuti_1",
+    "hymn_id": "hanumanstuti",
+    "hymn_name": "Hanumān Stuti",
+    "category": "Vaishnava Stotrams",
+    "composer": "Traditional",
+    "verse_number": 1,
+    "title": "Verse 1",
+    "original": "namō pāpanāśaṁ namō suprākāśam ।\nnamō vēdasāraṁ namō nirvikāram ॥\nnamō nikila sampūjitaṁ dēvarēṣṭam ।\nnamō mārutim rāma dūtaṁ namāmi ॥",
+    "split_lines": [
+      "namō | pāpanāśaṁ | namō | suprākāśam",
+      "namō | vēdasāraṁ | namō | nirvikāram",
+      "namō | nikila | sampūjitaṁ | dēvarēṣṭam",
+      "namō | mārutim | rāma | dūtaṁ | namāmi"
+    ]
+  },
+  {
+    "id": "hanumanstuti_2",
+    "hymn_id": "hanumanstuti",
+    "hymn_name": "Hanumān Stuti",
+    "category": "Vaishnava Stotrams",
+    "composer": "Traditional",
+    "verse_number": 2,
+    "title": "Verse 2",
+    "original": "namō kāmarūpaṁ namō raudrarūpam ।\nnamō vāyutanayaṁ namō vānarāgram ॥\nnamō bhaktavarthyakam ātmavāsam ।\nnamō mārutim rāma dūtaṁ namāmi ॥",
+    "split_lines": [
+      "namō | kāmarūpaṁ | namō | raudrarūpam",
+      "namō | vāyutanayaṁ | namō | vānarāgram",
+      "namō | bhaktavarthyakam | ātmavāsam",
+      "namō | mārutim | rāma | dūtaṁ | namāmi"
     ]
   }
 ]

@@ -690,12 +690,57 @@ function updateReaderHeader() {
 }
 
 function loadVersesIntoReader(versesArray) {
-  currentVersesList = versesArray;
+  // Clone versesArray to avoid modifying the original cached database in memory
+  const clonedVerses = versesArray.map(v => {
+    const cloned = { ...v };
+    if (v.split_lines) {
+      cloned.split_lines = [...v.split_lines];
+    }
+    return cloned;
+  });
+  
+  if (clonedVerses.length > 0) {
+    // Check if the loaded list represents a single hymn
+    const uniqueHymnIds = [...new Set(clonedVerses.map(v => v.hymn_id))];
+    const isSingleHymn = (uniqueHymnIds.length === 1);
+    
+    if (isSingleHymn) {
+      const firstVerse = clonedVerses[0];
+      const lastVerse = clonedVerses[clonedVerses.length - 1];
+      
+      const isDesikaOrPrabandham = 
+        (firstVerse.category && firstVerse.category.toLowerCase().includes('prabandham')) ||
+        (firstVerse.composer && firstVerse.composer.toLowerCase().includes('desika')) ||
+        (firstVerse.composer && firstVerse.composer.toLowerCase().includes('deśika')) ||
+        (firstVerse.hymn_id && firstVerse.hymn_id.toLowerCase().includes('desika')) ||
+        (firstVerse.hymn_id && firstVerse.hymn_id.toLowerCase().includes('prabandham'));
+        
+      if (isDesikaOrPrabandham) {
+        // Prepend repeat symbol to first verse if missing
+        if (firstVerse.original && !firstVerse.original.trim().startsWith('‡')) {
+          firstVerse.original = '‡ ' + firstVerse.original.trim();
+        }
+        if (firstVerse.split_lines && firstVerse.split_lines.length > 0 && !firstVerse.split_lines[0].trim().startsWith('‡')) {
+          firstVerse.split_lines[0] = '‡ ' + firstVerse.split_lines[0].trim();
+        }
+        
+        // Prepend repeat symbol to last verse if missing
+        if (lastVerse.original && !lastVerse.original.trim().startsWith('‡')) {
+          lastVerse.original = '‡ ' + lastVerse.original.trim();
+        }
+        if (lastVerse.split_lines && lastVerse.split_lines.length > 0 && !lastVerse.split_lines[0].trim().startsWith('‡')) {
+          lastVerse.split_lines[0] = '‡ ' + lastVerse.split_lines[0].trim();
+        }
+      }
+    }
+  }
+  
+  currentVersesList = clonedVerses;
   displayedVersesCount = 0;
   versesList.innerHTML = '';
   
-  if (versesArray.length > 0) {
-    const hymnId = versesArray[0].hymn_id;
+  if (currentVersesList.length > 0) {
+    const hymnId = currentVersesList[0].hymn_id;
     updateFavoriteButtonState(hymnId);
     addToRecents(hymnId);
   }
@@ -715,29 +760,26 @@ function appendDesikaTaniyanIfNeeded() {
                        
   if (isDesikaWork) {
     const thaniyanCard = document.createElement('div');
-    thaniyanCard.className = 'desika-thaniyan-card';
-    thaniyanCard.style.cssText = `
-      background: rgba(217, 167, 74, 0.05);
-      border: 1px solid rgba(217, 167, 74, 0.3);
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      text-align: center;
-    `;
+    thaniyanCard.className = 'verse-card desika-thaniyan-card';
+    thaniyanCard.style.cssText = 'position: relative;';
     
     let label = "Śrī Desika Taniyan";
-    let body = `śrīmān vēṅkaṭanāthāryaḥ kavitārkikakēsarī |<br>vēdāntācāryavaryō mē sannidhattāṃ sadā hṛdi ||`;
+    let body = `śrīmān vēṅkaṭanāthāryaḥ kavitārkikakēsarī |\nvēdāntācāryavaryō mē sannidhattāṃ sadā hṛdi ||`;
     if (currentLanguage === 'tamil') {
       label = "ஸ்ரீ தேசிக தனியன்";
-      body = `ஸ்ரீமான் வேங்கடநாதார்யஹ் கவிதாரிகிககேஸரீ |<br>வேதாந்தாசார்யவர்யோ மே ஸன்னிதத்தாம் ஸதா ஹ்ருதி ||`;
+      body = `ஸ்ரீமான் வேங்கடநாதார்யஹ் கவிதாரிகிககேஸரீ |\nவேதாந்தாசார்யவர்யோ மே ஸன்னிதத்தாம் ஸதா ஹ்ருதி ||`;
     }
     
+    const lineStyle = `font-size: ${chantingFontSize}; font-family: ${chantingFontFamily}; line-height: 1.55;`;
+    const lines = body.split('\n');
+    let linesHtml = lines.map(line => `<p class="verse-line" style="${lineStyle}">${line.trim()}</p>`).join('');
+    
     thaniyanCard.innerHTML = `
-      <div style="font-size: 12px; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 600;">
-        ${label}
-      </div>
-      <div style="font-size: 16.5px; line-height: 1.45; font-style: italic; color: var(--text-primary); font-family: 'Inter', sans-serif;">
-        ${body}
+      <div class="verse-text-box">
+        <div style="font-size: 11.5px; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; font-weight: 700; font-family: ${chantingFontFamily};">
+          ${label}
+        </div>
+        ${linesHtml}
       </div>
     `;
     versesList.appendChild(thaniyanCard);
@@ -758,10 +800,14 @@ function renderVersesIncremental(isReRender = false) {
 }
 
 function appendVerseCard(verse) {
+  const isPrabandham = verse.category && verse.category.toLowerCase().includes("prabandham");
+  
   const cardDiv = document.createElement('div');
   cardDiv.className = 'verse-card';
   cardDiv.style.position = 'relative';
-  cardDiv.style.paddingRight = '42px';
+  if (!isPrabandham) {
+    cardDiv.style.paddingRight = '42px';
+  }
   
   const meta = document.createElement('div');
   meta.className = 'verse-meta';
@@ -774,12 +820,35 @@ function appendVerseCard(verse) {
   const lineStyle = `font-size: ${chantingFontSize}; font-family: ${chantingFontFamily}; line-height: 1.55;`;
   const pillStyle = `font-size: calc(${chantingFontSize} - 1px); font-family: ${chantingFontFamily};`;
   
+  // Dynamic repeat detection
+  const startsWithRepeat = verse.original && verse.original.trim().startsWith('‡');
+  
+  // Render function for the repeat twice icon/badge
+  const createRepeatBadge = () => {
+    const indicator = document.createElement('span');
+    indicator.className = 'repeat-indicator';
+    indicator.style.cssText = `font-style: normal;`;
+    indicator.textContent = '‡';
+    return indicator;
+  };
+  
   if (isSplitMode && verse.split_lines && verse.split_lines.length > 0) {
     verse.split_lines.forEach((line, lineIdx) => {
       const lineDiv = document.createElement('div');
       lineDiv.className = 'word-pills-container';
       
-      let words = line.split(' | ');
+      let cleanLine = line.trim();
+      let hasRepeat = false;
+      if (lineIdx === 0 && startsWithRepeat) {
+        hasRepeat = true;
+        cleanLine = cleanLine.replace(/^‡\s*/, '');
+      }
+      
+      if (hasRepeat) {
+        lineDiv.appendChild(createRepeatBadge());
+      }
+      
+      let words = cleanLine.split(' | ');
       
       // Inline numbering on the last split line
       if (lineIdx === verse.split_lines.length - 1) {
@@ -788,9 +857,9 @@ function appendVerseCard(verse) {
           let lastWord = words[lastWordIdx].trim();
           lastWord = lastWord.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
           if (currentLanguage === 'tamil') {
-            words[lastWordIdx] = transliterateIASTtoTamil(lastWord) + `  ॥ ${verse.verse_number} ||`;
+            words[lastWordIdx] = transliterateIASTtoTamil(lastWord) + `  || ${verse.verse_number}`;
           } else {
-            words[lastWordIdx] = lastWord + `  ॥ ${verse.verse_number} ||`;
+            words[lastWordIdx] = lastWord + `  || ${verse.verse_number}`;
           }
         }
       }
@@ -819,150 +888,204 @@ function appendVerseCard(verse) {
       textBox.appendChild(lineDiv);
     });
   } else {
-    const lines = verse.original.split('\n');
-    lines.forEach((line, lineIdx) => {
-      let displayLine = line.trim();
+    // Conjoined Mode
+    const rawLines = verse.original.split('\n');
+    
+    // Check if it's a short verse (2 lines, each under 55 chars)
+    const isShortVerse = rawLines.length === 2 && 
+                         rawLines[0].trim().replace(/^‡\s*/, '').length < 55 && 
+                         rawLines[1].trim().length < 55;
+                         
+    if (isShortVerse) {
+      // Process as combined line
+      let line1 = rawLines[0].trim();
+      let line2 = rawLines[1].trim();
       
-      // Inline numbering on the last conjoined line
-      if (lineIdx === lines.length - 1) {
-        displayLine = displayLine.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
-        if (currentLanguage === 'tamil') {
-          displayLine = transliterateIASTtoTamil(displayLine) + `  ॥ ${verse.verse_number} ||`;
-        } else {
-          displayLine = displayLine + `  ॥ ${verse.verse_number} ||`;
-        }
+      let hasRepeat = false;
+      if (line1.startsWith('‡')) {
+        hasRepeat = true;
+        line1 = line1.replace(/^‡\s*/, '');
+      }
+      
+      // Strip verse number from line 2
+      line2 = line2.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
+      
+      if (currentLanguage === 'tamil') {
+        line1 = transliterateIASTtoTamil(line1);
+        line2 = transliterateIASTtoTamil(line2) + `  || ${verse.verse_number}`;
       } else {
-        if (currentLanguage === 'tamil') {
-          displayLine = transliterateIASTtoTamil(displayLine);
-        }
+        line2 = line2 + `  || ${verse.verse_number}`;
       }
       
       const lineP = document.createElement('p');
       lineP.className = 'verse-line';
-      lineP.textContent = displayLine;
       lineP.style.cssText = lineStyle;
+      
+      if (hasRepeat) {
+        lineP.appendChild(createRepeatBadge());
+      }
+      
+      lineP.appendChild(document.createTextNode(line1 + ' | ' + line2));
       textBox.appendChild(lineP);
-    });
+      
+    } else {
+      // Standard multi-line rendering
+      rawLines.forEach((line, lineIdx) => {
+        let displayLine = line.trim();
+        let hasRepeat = false;
+        
+        if (lineIdx === 0 && startsWithRepeat) {
+          hasRepeat = true;
+          displayLine = displayLine.replace(/^‡\s*/, '');
+        }
+        
+        // Inline numbering on the last conjoined line
+        if (lineIdx === rawLines.length - 1) {
+          displayLine = displayLine.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
+          if (currentLanguage === 'tamil') {
+            displayLine = transliterateIASTtoTamil(displayLine) + `  || ${verse.verse_number}`;
+          } else {
+            displayLine = displayLine + `  || ${verse.verse_number}`;
+          }
+        } else {
+          if (currentLanguage === 'tamil') {
+            displayLine = transliterateIASTtoTamil(displayLine);
+          }
+        }
+        
+        const lineP = document.createElement('p');
+        lineP.className = 'verse-line';
+        lineP.style.cssText = lineStyle;
+        
+        if (hasRepeat) {
+          lineP.appendChild(createRepeatBadge());
+        }
+        
+        lineP.appendChild(document.createTextNode(displayLine));
+        textBox.appendChild(lineP);
+      });
+    }
   }
   
   cardDiv.appendChild(textBox);
 
   // Create voice play button
-  const playBtn = document.createElement('button');
-  playBtn.className = 'verse-play-btn';
-  playBtn.innerHTML = SPEAKER_SVG;
-  playBtn.title = "Chant this verse";
-  playBtn.style.cssText = `
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--bg-card-border);
-    color: var(--text-secondary);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    padding: 0;
-    z-index: 5;
-  `;
-  
-  // Hover & Active effects
-  playBtn.addEventListener('mouseenter', () => {
-    if (!playBtn.classList.contains('loading') && !playBtn.classList.contains('playing')) {
-      playBtn.style.background = 'rgba(217, 167, 74, 0.08)';
-      playBtn.style.borderColor = 'var(--accent-gold)';
-      playBtn.style.color = 'var(--accent-gold)';
-      playBtn.style.transform = 'translateY(-50%) scale(1.08)';
-    }
-  });
-  playBtn.addEventListener('mouseleave', () => {
-    if (!playBtn.classList.contains('loading') && !playBtn.classList.contains('playing')) {
-      playBtn.style.background = 'rgba(255, 255, 255, 0.03)';
-      playBtn.style.borderColor = 'var(--bg-card-border)';
-      playBtn.style.color = 'var(--text-secondary)';
-      playBtn.style.transform = 'translateY(-50%) scale(1)';
-    }
-  });
-
-  playBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
+  if (!isPrabandham) {
+    const playBtn = document.createElement('button');
+    playBtn.className = 'verse-play-btn';
+    playBtn.innerHTML = SPEAKER_SVG;
+    playBtn.title = "Chant this verse";
+    playBtn.style.cssText = `
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--bg-card-border);
+      color: var(--text-secondary);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 0;
+      z-index: 5;
+    `;
     
-    // If clicking the currently playing button, stop it
-    if (activePlayBtn === playBtn) {
+    // Hover & Active effects
+    playBtn.addEventListener('mouseenter', () => {
+      if (!playBtn.classList.contains('loading') && !playBtn.classList.contains('playing')) {
+        playBtn.style.background = 'rgba(217, 167, 74, 0.08)';
+        playBtn.style.borderColor = 'var(--accent-gold)';
+        playBtn.style.color = 'var(--accent-gold)';
+        playBtn.style.transform = 'translateY(-50%) scale(1.08)';
+      }
+    });
+    playBtn.addEventListener('mouseleave', () => {
+      if (!playBtn.classList.contains('loading') && !playBtn.classList.contains('playing')) {
+        playBtn.style.background = 'rgba(255, 255, 255, 0.03)';
+        playBtn.style.borderColor = 'var(--bg-card-border)';
+        playBtn.style.color = 'var(--text-secondary)';
+        playBtn.style.transform = 'translateY(-50%) scale(1)';
+      }
+    });
+  
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      
+      // If clicking the currently playing button, stop it
+      if (activePlayBtn === playBtn) {
+        window.speechSynthesis.cancel();
+        resetPlayBtn(playBtn);
+        activePlayBtn = null;
+        return;
+      }
+      
+      // Cancel any active speech
       window.speechSynthesis.cancel();
-      resetPlayBtn(playBtn);
-      activePlayBtn = null;
-      return;
-    }
-    
-    // Cancel any active speech
-    window.speechSynthesis.cancel();
-    if (activePlayBtn) {
-      resetPlayBtn(activePlayBtn);
-    }
-    
-    setPlayBtnPlaying(playBtn);
-    activePlayBtn = playBtn;
-    
-    // Determine database type to select language and voice
-    const isStotram = (verse.hymn_id.includes('desika') && !verse.hymn_id.includes('prabandham')) || 
-                      verse.hymn_id.includes('dasavatara') || 
-                      verse.hymn_id.includes('stotra') || 
-                      verse.hymn_id.includes('vaishnava');
-                      
-    let speakText = "";
-    let langCode = "ta-IN"; // default to Tamil
-    
-    if (isStotram) {
-      // For Sanskrit, convert to Devanagari and use Hindi/Sanskrit voice
-      speakText = transliterateIASTtoDevanagari(verse.original);
-      langCode = "hi-IN";
-    } else {
-      // For Tamil (Prabandhams), convert to Tamil script
-      speakText = transliterateIASTtoTamil(verse.original);
-      // Clean up split symbols and numbers
-      speakText = speakText.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
-      speakText = speakText.replace(/⋆/g, '').replace(/‡/g, '');
-      langCode = "ta-IN";
-    }
-    
-    const utterance = new SpeechSynthesisUtterance(speakText);
-    utterance.lang = langCode;
-    utterance.rate = 0.80; // Chanting/recital pace
-    utterance.pitch = 1.0;
-    
-    // Select matching local voice
-    const voices = window.speechSynthesis.getVoices();
-    const matchingVoice = voices.find(v => v.lang.startsWith(langCode.substring(0, 2)) && v.localService);
-    if (matchingVoice) {
-      utterance.voice = matchingVoice;
-    }
-    
-    utterance.onend = () => {
-      resetPlayBtn(playBtn);
-      if (activePlayBtn === playBtn) {
-        activePlayBtn = null;
+      if (activePlayBtn) {
+        resetPlayBtn(activePlayBtn);
       }
-    };
-    
-    utterance.onerror = (err) => {
-      console.error("TTS Error:", err);
-      resetPlayBtn(playBtn);
-      if (activePlayBtn === playBtn) {
-        activePlayBtn = null;
+      
+      setPlayBtnPlaying(playBtn);
+      activePlayBtn = playBtn;
+      
+      // Determine database type to select language and voice
+      const isStotram = (verse.hymn_id.includes('desika') && !verse.hymn_id.includes('prabandham')) || 
+                        verse.hymn_id.includes('dasavatara') || 
+                        verse.hymn_id.includes('stotra') || 
+                        verse.hymn_id.includes('vaishnava');
+                        
+      let speakText = "";
+      let langCode = "ta-IN"; // default to Tamil
+      
+      if (isStotram) {
+        // For Sanskrit, convert to Devanagari and use Hindi/Sanskrit voice
+        speakText = transliterateIASTtoDevanagari(verse.original);
+        langCode = "hi-IN";
+      } else {
+        // For Tamil (Prabandhams), convert to Tamil script
+        speakText = transliterateIASTtoTamil(verse.original);
+        // Clean up split symbols and numbers
+        speakText = speakText.replace(/\s*(?:\|\||॥)\s*\d+\s*(?:\|\||॥)?\s*$/, '').trim();
+        speakText = speakText.replace(/⋆/g, '').replace(/‡/g, '');
+        langCode = "ta-IN";
       }
-    };
-    
-    window.speechSynthesis.speak(utterance);
-  });
-  
-  cardDiv.appendChild(playBtn);
+      
+      const utterance = new SpeechSynthesisUtterance(speakText);
+      utterance.lang = langCode;
+      utterance.rate = 0.80; // Chanting/recital pace
+      utterance.pitch = 1.0;
+      
+      // Select matching local voice
+      const voices = window.speechSynthesis.getVoices();
+      const matchingVoice = voices.find(v => v.lang.startsWith(langCode.substring(0, 2)) && v.localService);
+      if (matchingVoice) {
+        utterance.voice = matchingVoice;
+      }
+      
+      utterance.onend = () => {
+        resetPlayBtn(playBtn);
+        if (activePlayBtn === playBtn) {
+          activePlayBtn = null;
+        }
+      };
+      
+      utterance.onerror = (err) => {
+        console.error("TTS Error:", err);
+        resetPlayBtn(playBtn);
+        if (activePlayBtn === playBtn) {
+          activePlayBtn = null;
+        }
+      };
+      
+      window.speechSynthesis.speak(utterance);
+    });
+    cardDiv.appendChild(playBtn);
+  }
   versesList.appendChild(cardDiv);
 }
 
@@ -973,11 +1096,11 @@ function handleSearchOrAskAI() {
   const messageText = chatInput.value.trim();
   if (!messageText) return;
   
-  // 1. Try to find an instant hymn match (Fuzzy Match / I'm Feeling Lucky)
   const allDb = [...dbDivya, ...dbDesika, ...dbStotrams];
-  const groups = groupVersesByHymn(allDb);
   const q = normalizeText(messageText);
   
+  // 1. Try to find an instant hymn match (Fuzzy Match on hymn name)
+  const groups = groupVersesByHymn(allDb);
   let bestMatchGroup = null;
   for (const group of groups) {
     const normName = normalizeText(group.hymn_name);
@@ -996,7 +1119,38 @@ function handleSearchOrAskAI() {
     return;
   }
   
-  // 2. Fallback to conversational Ask AI message thread
+  // 2. Perform client-side full-text search across all verses
+  const matchedVerses = [];
+  allDb.forEach(verse => {
+    const textToSearch = normalizeText(
+      (verse.original || "") + " " +
+      (verse.split_lines ? verse.split_lines.join(" ") : "") + " " +
+      (verse.hymn_name || "") + " " +
+      (verse.composer || "") + " " +
+      (verse.category || "")
+    );
+    
+    if (textToSearch.includes(q)) {
+      matchedVerses.push({ ...verse });
+    }
+  });
+  
+  if (matchedVerses.length > 0) {
+    chatInput.value = '';
+    
+    // Check if matching verses span multiple hymns
+    const uniqueHymnIds = [...new Set(matchedVerses.map(v => v.hymn_id))];
+    if (uniqueHymnIds.length > 1) {
+      // Modify first element to show search title/subtitle in reader header
+      matchedVerses[0].hymn_name = `Search: "${messageText}"`;
+      matchedVerses[0].composer = `${matchedVerses.length} verses found`;
+    }
+    
+    loadVersesIntoReader(matchedVerses);
+    return;
+  }
+  
+  // 3. Fallback to conversational Ask AI message thread
   switchTab(chatMessages);
   handleSendMessage();
 }

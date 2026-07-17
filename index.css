@@ -369,7 +369,7 @@ input:checked + .slider:before {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 86vh;
+  height: 82vh;
   background: var(--bg-primary);
   border-top-left-radius: 22px;
   border-top-right-radius: 22px;
@@ -790,13 +790,6 @@ input:checked + .slider:before {
   }
   .word-pills-container {
     gap: 4px 4px !important;
-  }
-  .desika-thaniyan-card {
-    padding: 10px 12px !important;
-    margin-bottom: 12px !important;
-  }
-  .desika-thaniyan-card div {
-    font-size: 14.5px !important;
   }
 }
 

@@ -99,12 +99,12 @@
     "composer": "Nāthamuni",
     "verse_number": 7,
     "title": "Taniyan 7",
-    "original": "minnār taḍamadiḻśūz villiputtūrenṟoru kāl ⋆ śonnār kazaṟkamalam śūḍinōm ⋆\nmunnāḻ kiziyaṟuttān enṟuraittōm ⋆ kīzmaiyiniṟ śērum vaziyaṟuttōm neñjamē ! vandu",
+    "original": "minnār taḍamadiḻśūz villiputtūrenṟoru kāl ⋆\nśonnār kazaṟkamalam śūḍinōm ⋆\nmunnāḻ kiziyaṟuttān enṟuraittōm ⋆\nkīzmaiyiniṟ śērum vaziyaṟuttōm neñjamē ! vandu",
     "split_lines": [
       "minnār | taḍamadiḻśūz | villiputtūrenṟoru | kāl | ⋆",
-      "śonnār | kazaṟkamalam | śūḍinōm | ⋆ | - | munnāḻ",
-      "kiziyaṟuttān | enṟuraittōm | ⋆ | kīzmaiyiniṟ | śērum",
-      "vaziyaṟuttōm | neñjamē | ! | vandu"
+      "śonnār | kazaṟkamalam | śūḍinōm | ⋆",
+      "munnāḻ | kiziyaṟuttān | enṟuraittōm | ⋆",
+      "kīzmaiyiniṟ | śērum | vaziyaṟuttōm | neñjamē | ! | vandu"
     ]
   },
   {
@@ -962,14 +962,15 @@
     "composer": "Andal / Periyazhvar / Various",
     "verse_number": 1,
     "title": "Verse 1",
-    "original": "śiṭram śiṟugālē vandunnai ccēvittu ⋆ un\npoṭrāmarai aḍiyē pōṭrum poruḻ kēḻāy ⋆\npeṭram mēyttuṇṇum kulattil piṟandu ⋆ nī\nkuṭrēval eṅgaḻai kkoḻḻāmal pōgādu ⋆\niṭrai ppaṟai koḻvān anṟugāṇ gōvindā ! ⋆\neṭraikkum ēzēz piṟavikkum ⋆ unṟannō -\nḍuṭrōmēyāvōm unakkē nām āṭceyvōm ⋆\nmaṭrai nam kāmaṅgaḻ māṭrēlōr embāvāy",
+    "original": "śiṭram śiṟugālē vandunnai ccēvittu ⋆ un\npoṭrāmarai aḍiyē pōṭrum poruḻ kēḻāy ⋆\npeṭram mēyttuṇṇum kulattil piṟandu ⋆ nī\nkuṭrēval eṅgaḻai kkoḻḻāmal pōgādu ⋆\niṭrai ppaṟai koḻvān anṟugāṇ gōvindā ! ⋆\neṭraikkum ēzēz piṟavikkum ⋆\nunṟannō\nḍuṭrōmēyāvōm unakkē nām āṭceyvōm ⋆\nmaṭrai nam kāmaṅgaḻ māṭrēlōr embāvāy",
     "split_lines": [
       "śiṭram | śiṟugālē | vandunnai | ccēvittu | ⋆ | un",
       "poṭrāmarai | aḍiyē | pōṭrum | poruḻ | kēḻāy | ⋆",
       "peṭram | mēyttuṇṇum | kulattil | piṟandu | ⋆ | nī",
       "kuṭrēval | eṅgaḻai | kkoḻḻāmal | pōgādu | ⋆",
       "iṭrai | ppaṟai | koḻvān | anṟugāṇ | gōvindā | ! | ⋆",
-      "eṭraikkum | ēzēz | piṟavikkum | ⋆ | unṟannō | -",
+      "eṭraikkum | ēzēz | piṟavikkum | ⋆",
+      "unṟannō",
       "ḍuṭrōmēyāvōm | unakkē | nām | āṭceyvōm | ⋆",
       "maṭrai | nam | kāmaṅgaḻ | māṭrēlōr | embāvāy"
     ]
@@ -1120,13 +1121,15 @@
     "composer": "Andal / Periyazhvar / Various",
     "verse_number": 10,
     "title": "Verse 10",
-    "original": "nānilamun tānvāza nānmaṟaigaḻ tāmvāza ⋆\nmānagarin māṟan maṟaiivāza ⋆ - ñāniyargaḻ\nśenniyaṇi śēr tūppul vēdānta dēśikanē innumoru nūṭrāṇḍirum\nvāziyaṇi tūppul varu nigamāntāśiriyan ⋆\nvāziyavan pādāravindamalar ⋆ - vāziyavan\nkōdilā ttāṇmalarai kkoṇḍāḍi kkoṇḍirukkum tīdilā nallōr tiraḻ",
+    "original": "nānilamun tānvāza nānmaṟaigaḻ tāmvāza ⋆\nmānagarin māṟan maṟaiivāza ⋆\nñāniyargaḻ\nśenniyaṇi śēr tūppul vēdānta dēśikanē innumoru nūṭrāṇḍirum\nvāziyaṇi tūppul varu nigamāntāśiriyan ⋆\nvāziyavan pādāravindamalar ⋆\nvāziyavan\nkōdilā ttāṇmalarai kkoṇḍāḍi kkoṇḍirukkum tīdilā nallōr tiraḻ",
     "split_lines": [
       "nānilamun | tānvāza | nānmaṟaigaḻ | tāmvāza | ⋆",
-      "mānagarin | māṟan | maṟaiivāza | ⋆ | - | ñāniyargaḻ",
+      "mānagarin | māṟan | maṟaiivāza | ⋆",
+      "ñāniyargaḻ",
       "śenniyaṇi | śēr | tūppul | vēdānta | dēśikanē | innumoru | nūṭrāṇḍirum",
       "vāziyaṇi | tūppul | varu | nigamāntāśiriyan | ⋆",
-      "vāziyavan | pādāravindamalar | ⋆ | - | vāziyavan",
+      "vāziyavan | pādāravindamalar | ⋆",
+      "vāziyavan",
       "kōdilā | ttāṇmalarai | kkoṇḍāḍi | kkoṇḍirukkum | tīdilā | nallōr | tiraḻ"
     ]
   },
@@ -1158,10 +1161,11 @@
     "composer": "Andal / Periyazhvar / Various",
     "verse_number": 12,
     "title": "Verse 12",
-    "original": "kōdai piṟanda ūr gōvindan vāzumūr ⋆\nśōdi maṇi māḍam tōnṟum ūr ⋆ - nīdiyāl\nnalla pattar vāzum ūr ⋆ nānmaṟaigaḻ ōdumūr ⋆\nvilliputtur vēda kkōnūr ⋆\npātagaṅgaḻ tīrkkum paraman aḍi kāṭṭum ⋆\nvēdam anaittukkum vittāgum ⋆ kōdai tamiz\naiyaindum aindum aṟiyāda māniḍarai ⋆\nvaiyam śumappadum vambu\ntiruvāḍi ppūrattu jagattudittāḻ vāziyē ⋆\ntiruppāvai muppadum śeppināḻ vāziyē ⋆\nperiyāzvār peṭreḍutta peṇ piḻḻai vāziyē ⋆\nperumbūdūr māmunikku ppinnānāḻ vāziyē ⋆\noru nūṭru nāṟbattu mūnṟuraittāḻ vāziyē ⋆\nuyar araṅgaṟkē kaṇṇi ugandaḻittāḻ vāziyē ⋆\nmaruvārum tirumalli vaḻanāḍi vāziyē ⋆\nvaṇ puduvai nagar kkōdai malar ppadaṅgaḻ vāziyē",
+    "original": "kōdai piṟanda ūr gōvindan vāzumūr ⋆\nśōdi maṇi māḍam tōnṟum ūr ⋆\nnīdiyāl\nnalla pattar vāzum ūr ⋆ nānmaṟaigaḻ ōdumūr ⋆\nvilliputtur vēda kkōnūr ⋆\npātagaṅgaḻ tīrkkum paraman aḍi kāṭṭum ⋆\nvēdam anaittukkum vittāgum ⋆ kōdai tamiz\naiyaindum aindum aṟiyāda māniḍarai ⋆\nvaiyam śumappadum vambu\ntiruvāḍi ppūrattu jagattudittāḻ vāziyē ⋆\ntiruppāvai muppadum śeppināḻ vāziyē ⋆\nperiyāzvār peṭreḍutta peṇ piḻḻai vāziyē ⋆\nperumbūdūr māmunikku ppinnānāḻ vāziyē ⋆\noru nūṭru nāṟbattu mūnṟuraittāḻ vāziyē ⋆\nuyar araṅgaṟkē kaṇṇi ugandaḻittāḻ vāziyē ⋆\nmaruvārum tirumalli vaḻanāḍi vāziyē ⋆\nvaṇ puduvai nagar kkōdai malar ppadaṅgaḻ vāziyē",
     "split_lines": [
       "kōdai | piṟanda | ūr | gōvindan | vāzumūr | ⋆",
-      "śōdi | maṇi | māḍam | tōnṟum | ūr | ⋆ | - | nīdiyāl",
+      "śōdi | maṇi | māḍam | tōnṟum | ūr | ⋆",
+      "nīdiyāl",
       "nalla | pattar | vāzum | ūr | ⋆ | nānmaṟaigaḻ | ōdumūr | ⋆",
       "villiputtur | vēda | kkōnūr | ⋆",
       "pātagaṅgaḻ | tīrkkum | paraman | aḍi | kāṭṭum | ⋆",

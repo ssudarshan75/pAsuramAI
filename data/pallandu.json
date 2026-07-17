@@ -6,9 +6,9 @@
     "alvar": "Periyāzvār",
     "original": "‡ pallāṇḍu pallāṇḍu pallāyirattāṇḍu ⋆\npala kōḍi nūṟāyiram ⋆\nmallāṇḍa tiṇdōḻ maṇivaṇṇā ! ⋆\nun śēvaḍi śevvi tirukkāppu",
     "split_lines": [
-      "‡ pallāṇḍu | pallāṇḍu | pallā-yirattāṇḍu | ⋆",
+      "‡ | pallāṇḍu | pallāṇḍu | pallāyirattāṇḍu | ⋆",
       "pala | kōḍi | nūṟāyiram | ⋆",
-      "mallāṇḍa | tiṇdōḻ | maṇi-vaṇṇā ! | ⋆",
+      "mallāṇḍa | tiṇdōḻ | maṇivaṇṇā | ! | ⋆",
       "un | śēvaḍi | śevvi | tirukkāppu"
     ],
     "explanation": "Blessing of long life (Pallandu) for thousands of years, and millions of years, to the Lord with strong shoulders who wrestled and won, whose complexion is like a dark gem. May your red lotus feet be protected."
@@ -20,14 +20,14 @@
     "alvar": "Periyāzvār",
     "original": "‡ aḍiyōmōḍum ninnōḍum ⋆\npirivinṟi āyiram pallāṇḍu ⋆\nvaḍivāy nin vala mārbinil ⋆\nvāzginṟa maṅgaiyum pallāṇḍu ⋆\nvaḍivār śōdi valattuṟaiyum ⋆\nśuḍarāziyum pallāṇḍu ⋆\npaḍai pōr pukku muzaṅgum ⋆\nappāñcaśanniyamum pallāṇḍē",
     "split_lines": [
-      "‡ aḍiyōmōḍum | ninnōḍum | ⋆",
+      "‡ | aḍiyōmōḍum | ninnōḍum | ⋆",
       "pirivinṟi | āyiram | pallāṇḍu | ⋆",
       "vaḍivāy | nin | vala | mārbinil | ⋆",
       "vāzginṟa | maṅgaiyum | pallāṇḍu | ⋆",
       "vaḍivār | śōdi | valattuṟaiyum | ⋆",
-      "śuḍar-āziyum | pallāṇḍu | ⋆",
+      "śuḍarāziyum | pallāṇḍu | ⋆",
       "paḍai | pōr | pukku | muzaṅgum | ⋆",
-      "ap-pāñcaśanniyamum | pallāṇḍē"
+      "appāñcaśanniyamum | pallāṇḍē"
     ],
     "explanation": "May we, your devotees, remain united with you without separation for thousands of years. May the Goddess Lakshmi, who resides on the right side of your chest, live for many years. May your radiant Sudarshana discus reside on your right hand for many years. May your Panchajanya conch, which sounds in battle, live for many years."
   },
@@ -38,13 +38,13 @@
     "alvar": "Periyāzvār",
     "original": "vāzāṭ paṭṭu ninṟīr uḻḻīrēl ⋆\nvandu maṇṇum maṇamum koṇmin ⋆\nkūzāṭ paṭṭu ninṟīrgaḻai ⋆\neṅgaḻ kuzuvinil pugudaloṭṭōm ⋆\nēzāṭ kālum pazippilōm nāṅgaḻ ⋆\nirākkadar vāz ⋆\nilaṅgai pāzāḻāga ppaḍai porudānukku ⋆\npallāṇḍu kūṟudumē",
     "split_lines": [
-      "vāz-āṭ | paṭṭu | ninṟīr | uḻḻīrēl | ⋆",
+      "vāzāṭ | paṭṭu | ninṟīr | uḻḻīrēl | ⋆",
       "vandu | maṇṇum | maṇamum | koṇmin | ⋆",
-      "kūz-āṭ | paṭṭu | ninṟīrgaḻai | ⋆",
+      "kūzāṭ | paṭṭu | ninṟīrgaḻai | ⋆",
       "eṅgaḻ | kuzuvinil | pugudaloṭṭōm | ⋆",
-      "ēz-āṭ | kālum | pazippilōm | nāṅgaḻ | ⋆",
+      "ēzāṭ | kālum | pazippilōm | nāṅgaḻ | ⋆",
       "irākkadar | vāz | ⋆",
-      "ilaṅgai | pāz-āḻāga | paḍai | porudānukku | ⋆",
+      "ilaṅgai | pāzāḻāga | ppaḍai | porudānukku | ⋆",
       "pallāṇḍu | kūṟudumē"
     ],
     "explanation": "If you wish to serve the Lord forever, come and join us. We will not allow those who seek only material wealth to enter our group. We, free of blame for seven generations, sing Pallandu to the Lord who destroyed Lanka, where the demons lived."
@@ -61,7 +61,7 @@
       "kūḍu | manam | uḍaiyīrgaḻ | varambozi | ⋆",
       "vandollai | kkūḍuminō | ⋆",
       "nāḍu | nagaramum | nangaṟiya | ⋆",
-      "namō | nārāyaṇāyavenṟu | ⋆",
+      "amō | nārāyaṇāyavenṟu | ⋆",
       "pāḍu | manam | uḍai | ppattar | uḻḻīr | ! | ⋆",
       "vandu | pallāṇḍu | kūṟuminē"
     ],
@@ -76,7 +76,7 @@
     "split_lines": [
       "aṇdakkulattukkadibadi | āgi | ⋆",
       "aśurar | irākkadarai | ⋆",
-      "iṇḍai | kkulattai | eḍuttu | kaḻainda | ⋆",
+      "iṇḍai | kkulattai | eḍuttu | ktaḻainda | ⋆",
       "iruḍīgēśan | tanakku | ⋆",
       "toṇḍa | kkulattil | uḻḻīr | ! | vandaḍi | tozudu | ⋆",
       "āyira | nāmam | śolli | ⋆",
@@ -145,13 +145,13 @@
     "alvar": "Periyāzvār",
     "original": "uḍuttu kkaḻainda nin pīdagavāḍai uḍuttu ⋆\nkalattaduṇḍu ⋆\ntoḍutta tuzāymalar śūḍi kkaḻaindana ⋆\nśūḍumittoṇḍargaḻōm ⋆\nviḍutta tiśai kkarumam tirutti ⋆\ntiruvōṇa ttiruvizavil ⋆\npaḍutta painnāgaṇai ppaḻḻikoṇḍānukku ⋆\npallāṇḍu kūṟudumē",
     "split_lines": [
-      "uḍuttu | kaḻainda | nin | pīdagavāḍai | uḍuttu | ⋆",
+      "uḍuttu | kkaḻainda | nin | pīdagavāḍai | uḍuttu | ⋆",
       "kalattaduṇḍu | ⋆",
-      "toḍutta | tuzāymalar | śūḍi | kaḻaindana | ⋆",
+      "toḍutta | tuzāymalar | śūḍi | kkaḻaindana | ⋆",
       "śūḍumittoṇḍargaḻōm | ⋆",
       "viḍutta | tiśai | kkarumam | tirutti | ⋆",
       "tiruvōṇa | ttiruvizavil | ⋆",
-      "paḍutta | painnāgaṇai | paḻḻikoṇḍānukku | ⋆",
+      "paḍutta | painnāgaṇai | ppaḻḻikoṇḍānukku | ⋆",
       "pallāṇḍu | kūṟudumē"
     ],
     "explanation": "The Lord gives us yellow silk robes to wear, His prasadam to eat, betel leaves, and flower garlands for our shoulders, removing our sorrows. To the mysterious Lord wearing honey-dripping Tulasi garlands, who is sweet to my heart, we sing Pallandu."
@@ -170,7 +170,7 @@
       "śennāḻ | tōṭri | ⋆",
       "tirumaduraiyuḻ | śilaikunittu | ⋆",
       "aindalaiya | painnāga | ttalai | pāyndavanē | ! | ⋆",
-      "unnai | pallāṇḍu | kūṟudumē"
+      "unnai | ppallāṇḍu | kūṟudumē"
     ],
     "explanation": "According to the palm-leaf record that we are your eternal servants, and the deed stating we perform service to your devotees, the Lord has freed us from worldly desires. To Madhava, my eternal Master, I sing Pallandu."
   },
@@ -181,14 +181,14 @@
     "alvar": "Periyāzvār",
     "original": "‡ alvazakkonṟum illā ⋆\naṇi kōṭṭiyar kōn ⋆\nabimāna tuṅgan śelvanaippōla ⋆\ntirumālē ! nānum unakku ppazavaḍiyēn ⋆\nnalvagaiyāl namō nārāyaṇāvenṟu ⋆\nnāmam pala paravi ⋆\npalvagaiyālum pavittiranē ! ⋆\nunnai ppallāṇḍu kūṟuvanē",
     "split_lines": [
-      "‡ alvazakkonṟum | illā | ⋆",
+      "‡ | alvazakkonṟum | illā | ⋆",
       "aṇi | kōṭṭiyar | kōn | ⋆",
       "abimāna | tuṅgan | śelvanaippōla | ⋆",
       "tirumālē | ! | nānum | unakku | ppazavaḍiyēn | ⋆",
       "nalvagaiyāl | namō | nārāyaṇāvenṟu | ⋆",
       "nāmam | pala | paravi | ⋆",
       "palvagaiyālum | pavittiranē | ! | ⋆",
-      "unnai | pallāṇḍu | kūṟuvanē"
+      "unnai | ppallāṇḍu | kūṟuvanē"
     ],
     "explanation": "Those who sing Pallandu to the faultless Lord Vishnu will be praised by all. They will have no obstacles or questions in their path, and they will directly enter the eternal kingdom of Sri Vaikunta to serve the wealthy Lord."
   },
@@ -199,7 +199,7 @@
     "alvar": "Periyāzvār",
     "original": "‡ pallāṇḍenṟu pavittiranai ⋆\nparamēṭṭiyai ⋆\nśārṅgam ennum villāṇḍān tannai ⋆\nvilliputtūr viṭṭuśittan virumbiya śol ⋆\nnallāṇdenṟu navinṟuraippār ⋆\nnamō nārāyaṇāyavenṟu ⋆\npallāṇḍum paramātmanai ⋆\nśūzndirundēttuvar pallāṇdē",
     "split_lines": [
-      "‡ pallāṇḍenṟu | pavittiranai | ⋆",
+      "‡ | pallāṇḍenṟu | pavittiranai | ⋆",
       "paramēṭṭiyai | ⋆",
       "śārṅgam | ennum | villāṇḍān | tannai | ⋆",
       "villiputtūr | viṭṭuśittan | virumbiya | śol | ⋆",
