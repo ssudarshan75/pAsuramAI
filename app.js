@@ -35,7 +35,8 @@ const tabBtnSettings = document.getElementById('tab-settings');
 
 // Flat list search and filters
 const scriptureSearchInput = document.getElementById('scripture-search-input');
-const scriptureSearchBtn = document.getElementById('scripture-search-btn');
+const filterToggleBtn = document.getElementById('filter-toggle-btn');
+const categoryFilterDrawer = document.getElementById('category-filter-drawer');
 const flatTocList = document.getElementById('flat-toc-list');
 const composersListContainer = document.getElementById('composers-list-container');
 const favoritesList = document.getElementById('favorites-list');
@@ -133,16 +134,38 @@ if (scriptureSearchInput) {
   });
 }
 
-if (scriptureSearchBtn) {
-  scriptureSearchBtn.addEventListener('click', () => {
-    const q = scriptureSearchInput.value.trim();
-    if (q) {
-      if (tabBtnChat) tabBtnChat.click();
-      chatInput.value = q;
-      handleSearchOrAskAI();
-    }
+if (filterToggleBtn && categoryFilterDrawer) {
+  filterToggleBtn.addEventListener('click', () => {
+    categoryFilterDrawer.classList.toggle('collapsed');
   });
 }
+
+// Smart Bottom Tab Bar Hiding on Scroll
+let lastScrollTop = 0;
+const bottomTabBar = document.querySelector('.bottom-tab-bar');
+
+function handleTabBarScroll(e) {
+  const scrollTop = e.target.scrollTop || document.documentElement.scrollTop;
+  const searchHeader = document.querySelector('.search-header-bar');
+  if (scrollTop > lastScrollTop && scrollTop > 40) {
+    if (bottomTabBar) bottomTabBar.classList.add('tab-bar-hidden');
+    if (searchHeader) searchHeader.classList.add('header-hidden');
+  } else if (scrollTop < lastScrollTop) {
+    if (bottomTabBar) bottomTabBar.classList.remove('tab-bar-hidden');
+    if (searchHeader) searchHeader.classList.remove('header-hidden');
+  }
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+}
+
+const mainContentFlow = document.querySelector('.main-content-flow');
+if (mainContentFlow) {
+  mainContentFlow.addEventListener('scroll', handleTabBarScroll);
+}
+const scrollableReader = document.querySelector('.reader-content');
+if (scrollableReader) {
+  scrollableReader.addEventListener('scroll', handleTabBarScroll);
+}
+window.addEventListener('scroll', handleTabBarScroll);
 
 // Category filter pills click handler
 document.querySelectorAll('.filter-pill').forEach(pill => {
@@ -191,6 +214,8 @@ tabs.forEach(tab => {
       });
       tab.btn.classList.add('active');
       
+      if (bottomTabBar) bottomTabBar.classList.remove('tab-bar-hidden');
+      
       if (tab.view === tabViewMyHymns) {
         renderFavoritesList();
         renderRecentsList();
@@ -204,6 +229,7 @@ tabs.forEach(tab => {
 if (closeReaderBtn) {
   closeReaderBtn.addEventListener('click', () => {
     readerPanel.classList.remove('open');
+    if (bottomTabBar) bottomTabBar.classList.remove('tab-bar-hidden');
   });
 }
 
@@ -698,6 +724,7 @@ function loadVersesIntoReader(versesArray) {
   
   renderVersesIncremental(false);
   readerPanel.classList.add('open');
+  if (bottomTabBar) bottomTabBar.classList.add('tab-bar-hidden');
 }
 
 function appendDesikaTaniyanIfNeeded() {
