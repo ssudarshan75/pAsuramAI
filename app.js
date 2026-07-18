@@ -699,41 +699,7 @@ function loadVersesIntoReader(versesArray) {
     return cloned;
   });
   
-  if (clonedVerses.length > 0) {
-    // Check if the loaded list represents a single hymn
-    const uniqueHymnIds = [...new Set(clonedVerses.map(v => v.hymn_id))];
-    const isSingleHymn = (uniqueHymnIds.length === 1);
-    
-    if (isSingleHymn) {
-      const firstVerse = clonedVerses[0];
-      const lastVerse = clonedVerses[clonedVerses.length - 1];
-      
-      const isDesikaOrPrabandham = 
-        (firstVerse.category && firstVerse.category.toLowerCase().includes('prabandham')) ||
-        (firstVerse.composer && firstVerse.composer.toLowerCase().includes('desika')) ||
-        (firstVerse.composer && firstVerse.composer.toLowerCase().includes('deśika')) ||
-        (firstVerse.hymn_id && firstVerse.hymn_id.toLowerCase().includes('desika')) ||
-        (firstVerse.hymn_id && firstVerse.hymn_id.toLowerCase().includes('prabandham'));
-        
-      if (isDesikaOrPrabandham) {
-        // Prepend repeat symbol to first verse if missing
-        if (firstVerse.original && !firstVerse.original.trim().startsWith('‡')) {
-          firstVerse.original = '‡ ' + firstVerse.original.trim();
-        }
-        if (firstVerse.split_lines && firstVerse.split_lines.length > 0 && !firstVerse.split_lines[0].trim().startsWith('‡')) {
-          firstVerse.split_lines[0] = '‡ ' + firstVerse.split_lines[0].trim();
-        }
-        
-        // Prepend repeat symbol to last verse if missing
-        if (lastVerse.original && !lastVerse.original.trim().startsWith('‡')) {
-          lastVerse.original = '‡ ' + lastVerse.original.trim();
-        }
-        if (lastVerse.split_lines && lastVerse.split_lines.length > 0 && !lastVerse.split_lines[0].trim().startsWith('‡')) {
-          lastVerse.split_lines[0] = '‡ ' + lastVerse.split_lines[0].trim();
-        }
-      }
-    }
-  }
+  // No automatic prepending of ‡ repeat symbol
   
   currentVersesList = clonedVerses;
   displayedVersesCount = 0;
