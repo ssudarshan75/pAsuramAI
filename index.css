@@ -259,7 +259,7 @@ input:checked + .slider:before {
 .search-header-bar {
   display: flex;
   gap: 10px;
-  padding: 16px 20px;
+  padding: calc(16px + var(--safe-top)) 20px 16px 20px;
   background: rgba(11, 15, 25, 0.95);
   border-bottom: 1px solid var(--bg-card-border);
   align-items: center;
@@ -1058,6 +1058,23 @@ body.theme-ivory .chat-input-bar input {
 /* Ensure messages thread doesn't overlap chat bar */
 #tabview-chat .chat-messages {
   padding-bottom: 80px !important;
+}
+
+/* iOS safe area overrides for headerless view tabs */
+#tabview-composers .toc-container {
+  padding-top: calc(24px + var(--safe-top)) !important;
+}
+
+#tabview-myhymns .segment-control-container {
+  padding-top: calc(16px + var(--safe-top)) !important;
+}
+
+#tabview-chat .suggested-prompts {
+  padding-top: calc(12px + var(--safe-top)) !important;
+}
+
+#tabview-settings .toc-container {
+  padding-top: calc(24px + var(--safe-top)) !important;
 }
 
 
