@@ -51,76 +51,98 @@
     </div>
   </header>
 
-  <!-- Main Container -->
-  <div class="chat-container">
-    <!-- Combined Search / Chat Bar at the top -->
-    <div class="search-header-bar">
-      <input type="text" id="chat-input" placeholder="Search scriptures, composers, or words..." autocomplete="off">
-      <button id="chat-send-btn">Search</button>
+  <!-- Main View Frame -->
+  <main class="main-content-flow">
+    <!-- Scriptures Tab View (Flat list of hymns) -->
+    <div id="tabview-scriptures" class="tab-view">
+      <div class="search-header-bar">
+        <input type="text" id="scripture-search-input" placeholder="Search hymn name or composer..." autocomplete="off">
+        <button id="scripture-search-btn">Ask AI</button>
+      </div>
+      
+      <!-- Category Filter Pills -->
+      <div class="filter-pills">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="divya">Divya Prabandham</button>
+        <button class="filter-pill" data-filter="desika">Desika Prabandham</button>
+        <button class="filter-pill" data-filter="stotram">Stotrams</button>
+      </div>
+
+      <div class="toc-container">
+        <div class="hymn-list-container" id="flat-toc-list">
+          <!-- Loaded dynamically from databases -->
+        </div>
+      </div>
     </div>
 
-    <div class="main-content-flow">
-      <!-- Table of Contents Section (Default View) -->
-      <div id="toc-container" class="toc-container hidden">
-        <h2 class="section-title">Scriptures</h2>
-        
-        <!-- Accordion Folders -->
-        <div class="toc-folder" data-folder="divya" style="margin-bottom: 10px;">
-          <div class="toc-folder-header" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--bg-card-border); border-radius: 12px; cursor: pointer; transition: 0.2s;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 16px;">📁</span>
-              <span style="font-weight: 600; font-size: 14.5px; color: var(--text-primary);">Divya Prabandham</span>
-            </div>
-            <span class="folder-arrow" style="font-size: 11px; color: var(--text-secondary); transition: transform 0.2s;">▶</span>
-          </div>
-          <div class="toc-folder-content hidden" id="main-divya-list" style="margin-top: 8px; padding-left: 4px;">
-            <!-- Loaded dynamically from local database -->
-          </div>
+    <!-- Composers Tab View -->
+    <div id="tabview-composers" class="tab-view hidden">
+      <div class="toc-container">
+        <div class="composers-list" id="composers-list-container">
+          <!-- Loaded dynamically -->
         </div>
+      </div>
+    </div>
 
-        <div class="toc-folder" data-folder="desika" style="margin-bottom: 10px;">
-          <div class="toc-folder-header" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--bg-card-border); border-radius: 12px; cursor: pointer; transition: 0.2s;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 16px;">📁</span>
-              <span style="font-weight: 600; font-size: 14.5px; color: var(--text-primary);">Desika Prabandham</span>
-            </div>
-            <span class="folder-arrow" style="font-size: 11px; color: var(--text-secondary); transition: transform 0.2s;">▶</span>
-          </div>
-          <div class="toc-folder-content hidden" id="main-desika-list" style="margin-top: 8px; padding-left: 4px;">
-            <!-- Loaded dynamically from local database -->
-          </div>
-        </div>
-        
-        <div class="toc-folder" data-folder="stotrams" style="margin-bottom: 10px;">
-          <div class="toc-folder-header" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--bg-card-border); border-radius: 12px; cursor: pointer; transition: 0.2s;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 16px;">📁</span>
-              <span style="font-weight: 600; font-size: 14.5px; color: var(--text-primary);">Vaishnava Stotram</span>
-            </div>
-            <span class="folder-arrow" style="font-size: 11px; color: var(--text-secondary); transition: transform 0.2s;">▶</span>
-          </div>
-          <div class="toc-folder-content hidden" id="main-stotram-list" style="margin-top: 8px; padding-left: 4px;">
-            <!-- Loaded dynamically from local database -->
-          </div>
+    <!-- My Hymns Tab View (Favorites & Recents with iOS Segment Toggle) -->
+    <div id="tabview-myhymns" class="tab-view hidden">
+      <div class="segment-control-container">
+        <div class="segment-control">
+          <button class="segment-btn active" id="segment-btn-favs">Favorites</button>
+          <button class="segment-btn" id="segment-btn-recents">Recently Opened</button>
         </div>
       </div>
 
-      <!-- Favorites Section (Hidden by default) -->
-      <div id="favorites-container" class="toc-container hidden">
-        <h2 class="section-title">Favorites</h2>
-        <div id="favorites-empty-msg" style="text-align: center; color: var(--text-secondary); padding: 40px 20px; font-size: 14.5px; line-height: 1.6;">
+      <!-- Favorites Section -->
+      <div id="favorites-section-container" class="toc-container">
+        <div id="favorites-empty-msg" class="empty-tab-msg">
           <span style="font-size: 32px; display: block; margin-bottom: 12px;">❤️</span>
           No favorites added yet.<br>Open a hymn and tap the star icon at the top to add it here.
         </div>
         <div class="hymn-list-container" id="favorites-list">
-          <!-- Loaded dynamically from favorites -->
+          <!-- Loaded dynamically -->
         </div>
       </div>
 
-      <!-- Settings Section (Hidden by default) -->
-      <div id="settings-container" class="toc-container hidden">
-        <h2 class="section-title">Settings</h2>
-        
+      <!-- Recents Section -->
+      <div id="recents-section-container" class="toc-container hidden">
+        <div id="recents-empty-msg" class="empty-tab-msg">
+          <span style="font-size: 32px; display: block; margin-bottom: 12px;">🕒</span>
+          No recently opened hymns yet.<br>Open a hymn from the list to see it here.
+        </div>
+        <div class="hymn-list-container" id="recents-list">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Ask AI Tab View -->
+    <div id="tabview-chat" class="tab-view hidden">
+      <div class="suggested-prompts">
+        <button class="prompt-btn" data-query="dashaavataarastotram">Daśāvatāra Stotram</button>
+        <button class="prompt-btn" data-query="tiruppaavai">Tiruppāvai</button>
+        <button class="prompt-btn" data-query="sudarshanaashtakam">Sudarśana Aṣṭakam</button>
+        <button class="prompt-btn" data-query="What is Mantra Pushpam?">About Mantra Pushpam</button>
+      </div>
+      
+      <div id="chat-messages" class="chat-messages">
+        <div class="message bot-message" style="margin-bottom: 24px;">
+          <div class="message-content">
+            <p>Pranāmams! 🙏 I am <strong>Paasuram AI</strong>, your companion for Srivaishnava scriptures.</p>
+            <p>Search or ask me questions about composers, verses, or meanings, and I'll find them for you!</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chat-input-bar">
+        <input type="text" id="chat-tab-input" placeholder="Ask AI about verses or meanings..." autocomplete="off">
+        <button id="chat-tab-send-btn">Send</button>
+      </div>
+    </div>
+
+    <!-- Settings Tab View -->
+    <div id="tabview-settings" class="tab-view hidden">
+      <div class="toc-container">
         <div class="setting-row" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
           <div style="padding-right: 16px;">
             <div style="font-weight: 600; font-size: 15px; color: var(--text-primary);">Word-by-Word Split Mode</div>
@@ -160,43 +182,34 @@
           </div>
         </div>
       </div>
-
-      <!-- Welcome Landing View (Shown by default) -->
-      <div id="welcome-view" class="welcome-view">
-        <div class="message bot-message" style="margin-bottom: 24px;">
-          <div class="message-content">
-            <p>Pranāmams! 🙏 I am <strong>Paasuram AI</strong>, your companion for Srivaishnava scriptures.</p>
-            <p>Search above to instantly open a hymn, or tap the floating 🌺 menu to browse categories.</p>
-          </div>
-        </div>
-
-        <!-- Recents (Last 5 Opened) Section -->
-        <div id="recents-section" class="recents-section hidden" style="margin-top: 28px;">
-          <h3 style="font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.8px; text-transform: uppercase;">Recently Opened</h3>
-          <div class="recents-list" id="recents-list" style="display: flex; flex-direction: column; gap: 8px;">
-            <!-- Loaded dynamically from localStorage -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Chat / AI Message Thread (Hidden by default, shown on conversational query) -->
-      <div id="chat-messages" class="chat-messages hidden">
-        <!-- Message thread populated dynamically -->
-      </div>
     </div>
-  </div>
+  </main>
 
-  <!-- Sleek Expanding Floating Action Menu Button (Tucked away, no screen clutter) -->
-  <div class="fab-container" id="fab-container">
-    <div class="fab-options" id="fab-options">
-      <button class="fab-opt-btn" id="opt-toc" data-label="Chant">📖</button>
-      <button class="fab-opt-btn" id="opt-favs" data-label="Favorites">❤️</button>
-      <button class="fab-opt-btn" id="opt-settings" data-label="Settings">⚙️</button>
-    </div>
-    <button class="fab-btn" id="fab-trigger">🌺</button>
-  </div>
+  <!-- iOS Bottom Tab Bar -->
+  <nav class="bottom-tab-bar">
+    <button class="tab-btn active" id="tab-scriptures">
+      <span class="tab-icon">📖</span>
+      <span class="tab-label">Scriptures</span>
+    </button>
+    <button class="tab-btn" id="tab-composers">
+      <span class="tab-icon">👤</span>
+      <span class="tab-label">Composers</span>
+    </button>
+    <button class="tab-btn" id="tab-myhymns">
+      <span class="tab-icon">❤️</span>
+      <span class="tab-label">My Hymns</span>
+    </button>
+    <button class="tab-btn" id="tab-chat">
+      <span class="tab-icon">💬</span>
+      <span class="tab-label">Ask AI</span>
+    </button>
+    <button class="tab-btn" id="tab-settings">
+      <span class="tab-icon">⚙️</span>
+      <span class="tab-label">Settings</span>
+    </button>
+  </nav>
 
-  <!-- Reader Panel Overlay (Slides up when verses are loaded) -->
+  <!-- Reader Panel Overlay -->
   <div class="reader-panel" id="reader-panel">
     <div class="reader-header">
       <div class="reader-title-box" style="flex: 1; margin-right: 12px;">
@@ -214,7 +227,6 @@
     </div>
     
     <div class="reader-content" id="reader-content">
-      <!-- Verses list loaded 10 at a time -->
       <div class="verses-list" id="verses-list"></div>
       
       <!-- Load More Button -->

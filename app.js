@@ -10,8 +10,8 @@ let currentLanguage = 'english';
 
 // DOM Elements
 const chatMessages = document.getElementById('chat-messages');
-const chatInput = document.getElementById('chat-input');
-const chatSendBtn = document.getElementById('chat-send-btn');
+const chatInput = document.getElementById('chat-tab-input');
+const chatSendBtn = document.getElementById('chat-tab-send-btn');
 const readerPanel = document.getElementById('reader-panel');
 const readerTitle = document.getElementById('reader-title');
 const readerSubtitle = document.getElementById('reader-subtitle');
@@ -20,26 +20,32 @@ const closeReaderBtn = document.getElementById('close-reader-btn');
 const loadMoreContainer = document.getElementById('load-more-container');
 const loadMoreBtn = document.getElementById('load-more-btn');
 
-// TOC & Views DOM Elements
-const tocContainer = document.getElementById('toc-container');
-const mainDivyaList = document.getElementById('main-divya-list');
-const mainDesikaList = document.getElementById('main-desika-list');
-const mainStotramList = document.getElementById('main-stotram-list');
-const favoritesContainer = document.getElementById('favorites-container');
-const favoritesList = document.getElementById('favorites-list');
-const settingsContainer = document.getElementById('settings-container');
+// New iOS Tab View Elements
+const tabViewScriptures = document.getElementById('tabview-scriptures');
+const tabViewComposers = document.getElementById('tabview-composers');
+const tabViewMyHymns = document.getElementById('tabview-myhymns');
+const tabViewChat = document.getElementById('tabview-chat');
+const tabViewSettings = document.getElementById('tabview-settings');
 
-// Welcome Landing DOM Elements
-const welcomeView = document.getElementById('welcome-view');
-const recentsSection = document.getElementById('recents-section');
+const tabBtnScriptures = document.getElementById('tab-scriptures');
+const tabBtnComposers = document.getElementById('tab-composers');
+const tabBtnMyHymns = document.getElementById('tab-myhymns');
+const tabBtnChat = document.getElementById('tab-chat');
+const tabBtnSettings = document.getElementById('tab-settings');
+
+// Flat list search and filters
+const scriptureSearchInput = document.getElementById('scripture-search-input');
+const scriptureSearchBtn = document.getElementById('scripture-search-btn');
+const flatTocList = document.getElementById('flat-toc-list');
+const composersListContainer = document.getElementById('composers-list-container');
+const favoritesList = document.getElementById('favorites-list');
 const recentsList = document.getElementById('recents-list');
 
-// Floating Action Menu DOM Elements
-const fabContainer = document.getElementById('fab-container');
-const fabTrigger = document.getElementById('fab-trigger');
-const optToc = document.getElementById('opt-toc');
-const optFavs = document.getElementById('opt-favs');
-const optSettings = document.getElementById('opt-settings');
+// Segment Toggle Elements
+const segmentBtnFavs = document.getElementById('segment-btn-favs');
+const segmentBtnRecents = document.getElementById('segment-btn-recents');
+const favoritesSection = document.getElementById('favorites-section-container');
+const recentsSection = document.getElementById('recents-section-container');
 
 // State Loaders (localStorage)
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -96,9 +102,11 @@ document.body.className = appTheme === 'midnight' ? '' : 'theme-' + appTheme;
 const headerHomeBtn = document.getElementById('header-home-btn');
 if (headerHomeBtn) {
   headerHomeBtn.addEventListener('click', () => {
-    switchTab(welcomeView);
-    chatInput.value = '';
-    chatInput.dispatchEvent(new Event('input'));
+    if (tabBtnScriptures) tabBtnScriptures.click();
+    if (scriptureSearchInput) {
+      scriptureSearchInput.value = '';
+      scriptureSearchInput.dispatchEvent(new Event('input'));
+    }
   });
 }
 
@@ -131,6 +139,7 @@ if (langBtnEng && langBtnTam) {
   });
 }
 
+// Chat Send Handlers (Ask AI Tab)
 if (chatSendBtn) {
   chatSendBtn.addEventListener('click', handleSearchOrAskAI);
 }
@@ -138,50 +147,96 @@ if (chatInput) {
   chatInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSearchOrAskAI();
   });
-  
-  // Real-Time TOC Lookup
-  chatInput.addEventListener('input', (e) => {
+}
+
+// Flat List Live Search Listener
+if (scriptureSearchInput) {
+  scriptureSearchInput.addEventListener('input', (e) => {
     const q = normalizeText(e.target.value);
-    
-    // Switch view back to TOC index if user starts typing while in other tabs
-    if (tocContainer.classList.contains('hidden') && q.length > 0) {
-      switchTab(tocContainer);
-    }
-    
-    const folders = document.querySelectorAll('.toc-folder');
-    folders.forEach(folder => {
-      const content = folder.querySelector('.toc-folder-content');
-      const arrow = folder.querySelector('.folder-arrow');
-      let hasVisibleMatch = false;
-      
-      const folderItems = content.querySelectorAll('.hymn-index-item');
-      folderItems.forEach(item => {
-        const normText = normalizeText(item.textContent);
-        if (normText.includes(q)) {
-          item.style.display = 'flex';
-          hasVisibleMatch = true;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-      
-      if (q.length > 0) {
-        if (hasVisibleMatch) {
-          folder.style.display = 'block';
-          content.classList.remove('hidden');
-          if (arrow) arrow.style.transform = 'rotate(90deg)';
-        } else {
-          folder.style.display = 'none';
-        }
-      } else {
-        // Reset state: folders visible, but collapsed
-        folder.style.display = 'block';
-        content.classList.add('hidden');
-        if (arrow) arrow.style.transform = 'rotate(0deg)';
+    const filterPillActive = document.querySelector('.filter-pill.active');
+    const filter = filterPillActive ? filterPillActive.getAttribute('data-filter') : 'all';
+    filterFlatList(q, filter);
+  });
+  
+  scriptureSearchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      const q = scriptureSearchInput.value.trim();
+      if (q) {
+        if (tabBtnChat) tabBtnChat.click();
+        chatInput.value = q;
+        handleSearchOrAskAI();
       }
-    });
+    }
   });
 }
+
+if (scriptureSearchBtn) {
+  scriptureSearchBtn.addEventListener('click', () => {
+    const q = scriptureSearchInput.value.trim();
+    if (q) {
+      if (tabBtnChat) tabBtnChat.click();
+      chatInput.value = q;
+      handleSearchOrAskAI();
+    }
+  });
+}
+
+// Category filter pills click handler
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    
+    const filter = pill.getAttribute('data-filter');
+    const q = scriptureSearchInput ? normalizeText(scriptureSearchInput.value) : '';
+    filterFlatList(q, filter);
+  });
+});
+
+// Segment Toggle Listeners (My Hymns Tab)
+if (segmentBtnFavs && segmentBtnRecents) {
+  segmentBtnFavs.addEventListener('click', () => {
+    segmentBtnFavs.classList.add('active');
+    segmentBtnRecents.classList.remove('active');
+    favoritesSection.classList.remove('hidden');
+    recentsSection.classList.add('hidden');
+  });
+  
+  segmentBtnRecents.addEventListener('click', () => {
+    segmentBtnRecents.classList.add('active');
+    segmentBtnFavs.classList.remove('active');
+    recentsSection.classList.remove('hidden');
+    favoritesSection.classList.add('hidden');
+  });
+}
+
+// Bottom Tab Bar Routing
+const tabs = [
+  { btn: tabBtnScriptures, view: tabViewScriptures },
+  { btn: tabBtnComposers, view: tabViewComposers },
+  { btn: tabBtnMyHymns, view: tabViewMyHymns },
+  { btn: tabBtnChat, view: tabViewChat },
+  { btn: tabBtnSettings, view: tabViewSettings }
+];
+
+tabs.forEach(tab => {
+  if (tab.btn) {
+    tab.btn.addEventListener('click', () => {
+      switchTab(tab.view);
+      tabs.forEach(t => {
+        if (t.btn) t.btn.classList.remove('active');
+      });
+      tab.btn.classList.add('active');
+      
+      if (tab.view === tabViewMyHymns) {
+        renderFavoritesList();
+        renderRecentsList();
+      } else if (tab.view === tabViewComposers) {
+        renderComposersView();
+      }
+    });
+  }
+});
 
 if (closeReaderBtn) {
   closeReaderBtn.addEventListener('click', () => {
@@ -195,72 +250,10 @@ if (loadMoreBtn) {
   });
 }
 
-// ----------------------------------------------------
-// Folder Accordion Toggle
-// ----------------------------------------------------
-document.querySelectorAll('.toc-folder-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const content = header.nextElementSibling;
-    const arrow = header.querySelector('.folder-arrow');
-    
-    if (content) {
-      const isHidden = content.classList.contains('hidden');
-      if (isHidden) {
-        content.classList.remove('hidden');
-        if (arrow) arrow.style.transform = 'rotate(90deg)';
-      } else {
-        content.classList.add('hidden');
-        if (arrow) arrow.style.transform = 'rotate(0deg)';
-      }
-    }
-  });
-});
-
-// ----------------------------------------------------
-// Floating Action Menu Actions
-// ----------------------------------------------------
-if (fabTrigger) {
-  fabTrigger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    fabContainer.classList.toggle('open');
-  });
-}
-
-// Close FAB when tapping anywhere outside the button
-document.addEventListener('click', () => {
-  if (fabContainer) fabContainer.classList.remove('open');
-});
-
-// Tab Navigation triggers
-if (optToc) {
-  optToc.addEventListener('click', () => {
-    switchTab(tocContainer);
-    chatInput.value = '';
-    chatInput.dispatchEvent(new Event('input'));
-  });
-}
-if (optFavs) {
-  optFavs.addEventListener('click', () => {
-    switchTab(favoritesContainer);
-    renderFavoritesList();
-  });
-}
-if (optSettings) {
-  optSettings.addEventListener('click', () => {
-    switchTab(settingsContainer);
-  });
-}
-
 function switchTab(targetView) {
-  // Close FAB menu drawer
-  if (fabContainer) fabContainer.classList.remove('open');
-  
-  // Hide all panels
-  [tocContainer, favoritesContainer, settingsContainer, chatMessages, welcomeView].forEach(view => {
+  [tabViewScriptures, tabViewComposers, tabViewMyHymns, tabViewChat, tabViewSettings].forEach(view => {
     if (view) view.classList.add('hidden');
   });
-  
-  // Show target
   if (targetView) targetView.classList.remove('hidden');
 }
 
@@ -421,13 +414,10 @@ function renderFavoritesList() {
   
   if (emptyMsg) emptyMsg.classList.add('hidden');
   
-  const allDb = [...dbDivya, ...dbDesika, ...dbStotrams];
-  const groups = groupVersesByHymn(allDb);
-  const favGroups = groups.filter(g => favorites.includes(g.hymn_id));
+  const favGroups = allHymnsCached.filter(g => favorites.includes(g.hymn_id));
   
   favGroups.forEach(group => {
-    const srcDb = dbDivya.some(v => v.hymn_id === group.hymn_id) ? dbDivya : (dbDesika.some(v => v.hymn_id === group.hymn_id) ? dbDesika : dbStotrams);
-    favoritesList.appendChild(createHymnIndexItem(group, srcDb));
+    favoritesList.appendChild(createHymnIndexItem(group, group.db, group.category));
   });
 }
 
@@ -435,40 +425,32 @@ function renderFavoritesList() {
 // Recents (Last 5 Opened) Manager
 // ----------------------------------------------------
 function addToRecents(hymnId) {
-  // Remove duplicate if it exists
   const idx = recents.indexOf(hymnId);
   if (idx > -1) {
     recents.splice(idx, 1);
   }
-  // Add to top
   recents.unshift(hymnId);
-  // Cap at 5
   recents = recents.slice(0, 5);
-  
   localStorage.setItem('recents', JSON.stringify(recents));
-  renderRecentsSection();
 }
 
-function renderRecentsSection() {
-  if (!recentsSection || !recentsList) return;
+function renderRecentsList() {
+  if (!recentsList) return;
   recentsList.innerHTML = '';
   
+  const emptyMsg = document.getElementById('recents-empty-msg');
+  
   if (recents.length === 0) {
-    recentsSection.classList.add('hidden');
+    if (emptyMsg) emptyMsg.classList.remove('hidden');
     return;
   }
   
-  recentsSection.classList.remove('hidden');
+  if (emptyMsg) emptyMsg.classList.add('hidden');
   
-  const allDb = [...dbDivya, ...dbDesika, ...dbStotrams];
-  const groups = groupVersesByHymn(allDb);
-  
-  // Find matching groups in order of recents
   recents.forEach(recId => {
-    const group = groups.find(g => g.hymn_id === recId);
+    const group = allHymnsCached.find(g => g.hymn_id === recId);
     if (group) {
-      const srcDb = dbDivya.some(v => v.hymn_id === group.hymn_id) ? dbDivya : (dbDesika.some(v => v.hymn_id === group.hymn_id) ? dbDesika : dbStotrams);
-      recentsList.appendChild(createHymnIndexItem(group, srcDb));
+      recentsList.appendChild(createHymnIndexItem(group, group.db, group.category));
     }
   });
 }
@@ -538,60 +520,86 @@ async function initLocalDatabase() {
     dbStotrams = await resStotrams.json();
     
     console.log(`Local DB loaded: ${dbDivya.length} Divya, ${dbDesika.length} Desika, ${dbStotrams.length} Stotrams.`);
-    populateBrowseLists();
-    renderRecentsSection();
+    renderFlatScriptures();
+    renderFavoritesList();
+    renderRecentsList();
   } catch (err) {
     console.error("Failed to load local database files:", err);
   }
 }
 
-function populateBrowseLists() {
-  if (!mainDivyaList || !mainDesikaList || !mainStotramList) return;
+let allHymnsCached = [];
+
+function renderFlatScriptures() {
+  if (!flatTocList) return;
+  flatTocList.innerHTML = '';
   
-  mainDivyaList.innerHTML = '';
-  mainDesikaList.innerHTML = '';
-  mainStotramList.innerHTML = '';
+  const divyaGroups = groupVersesByHymn(dbDivya).map(g => ({ ...g, category: 'divya', db: dbDivya }));
+  const desikaGroups = groupVersesByHymn(dbDesika).map(g => ({ ...g, category: 'desika', db: dbDesika }));
+  const stotramGroups = groupVersesByHymn(dbStotrams).map(g => ({ ...g, category: 'stotram', db: dbStotrams }));
   
-  // 1. Process Divya Prabandham
-  const divyaGroups = groupVersesByHymn(dbDivya);
-  const mostRecitedDivyaIds = ["tiruppallaandu", "tiruppaavai"];
-  const mostRecitedDivya = divyaGroups.filter(g => mostRecitedDivyaIds.includes(g.hymn_id));
-  const otherDivya = divyaGroups.filter(g => !mostRecitedDivyaIds.includes(g.hymn_id));
+  allHymnsCached = [...divyaGroups, ...desikaGroups, ...stotramGroups];
+  allHymnsCached.sort((a, b) => a.hymn_name.localeCompare(b.hymn_name));
   
-  if (mostRecitedDivya.length > 0) {
-    const subheader = document.createElement('div');
-    subheader.className = 'toc-subheader';
-    subheader.textContent = '🌟 Most Recited (Daily)';
-    mainDivyaList.appendChild(subheader);
-    mostRecitedDivya.forEach(group => {
-      mainDivyaList.appendChild(createHymnIndexItem(group, dbDivya));
-    });
-  }
+  allHymnsCached.forEach(group => {
+    flatTocList.appendChild(createHymnIndexItem(group, group.db, group.category));
+  });
+}
+
+function filterFlatList(q, filter) {
+  if (!flatTocList) return;
+  flatTocList.innerHTML = '';
   
-  if (otherDivya.length > 0) {
-    const subheader = document.createElement('div');
-    subheader.className = 'toc-subheader';
-    subheader.textContent = '📖 All Hymns (by Composer)';
-    mainDivyaList.appendChild(subheader);
-    otherDivya.forEach(group => {
-      mainDivyaList.appendChild(createHymnIndexItem(group, dbDivya));
-    });
-  }
+  allHymnsCached.forEach(group => {
+    const matchQuery = !q || 
+                       normalizeText(group.hymn_name).includes(q) || 
+                       normalizeText(group.composer).includes(q);
+    const matchFilter = filter === 'all' || group.category === filter;
+    
+    if (matchQuery && matchFilter) {
+      flatTocList.appendChild(createHymnIndexItem(group, group.db, group.category));
+    }
+  });
+}
+
+function renderComposersView() {
+  if (!composersListContainer) return;
+  composersListContainer.innerHTML = '';
   
-  // 2. Process Desika Prabandham
-  const desikaGroups = groupVersesByHymn(dbDesika);
-  desikaGroups.forEach(group => {
-    mainDesikaList.appendChild(createHymnIndexItem(group, dbDesika));
+  const composerMap = new Map();
+  allHymnsCached.forEach(hymn => {
+    const comp = hymn.composer || 'Various';
+    if (!composerMap.has(comp)) {
+      composerMap.set(comp, []);
+    }
+    composerMap.get(comp).push(hymn);
   });
   
-  // 3. Process Vaishnava Stotrams
-  const stotramGroups = groupVersesByHymn(dbStotrams);
+  const composers = Array.from(composerMap.keys()).sort((a, b) => {
+    if (a.toLowerCase().includes('deśika') || a.toLowerCase().includes('desika')) return -1;
+    if (b.toLowerCase().includes('deśika') || b.toLowerCase().includes('desika')) return 1;
+    return a.localeCompare(b);
+  });
   
-  // Sort stotrams alphabetically by name
-  stotramGroups.sort((a, b) => a.hymn_name.localeCompare(b.hymn_name));
-  
-  stotramGroups.forEach(group => {
-    mainStotramList.appendChild(createHymnIndexItem(group, dbStotrams));
+  composers.forEach(composer => {
+    const section = document.createElement('div');
+    section.className = 'composer-section';
+    section.style.marginBottom = '16px';
+    
+    const header = document.createElement('div');
+    header.className = 'composer-section-header';
+    header.textContent = composer;
+    section.appendChild(header);
+    
+    const list = document.createElement('div');
+    list.className = 'hymn-list-container';
+    
+    composerMap.get(composer).forEach(group => {
+      list.appendChild(createHymnIndexItem(group, group.db, group.category));
+    });
+    
+    section.appendChild(list);
+    composersListContainer.appendChild(section);
   });
 }
 
@@ -611,7 +619,7 @@ function groupVersesByHymn(verses) {
   return Array.from(map.values());
 }
 
-function createHymnIndexItem(group, sourceDb) {
+function createHymnIndexItem(group, sourceDb, category) {
   const div = document.createElement('div');
   div.className = 'hymn-index-item';
   div.style.cssText = `
@@ -628,37 +636,49 @@ function createHymnIndexItem(group, sourceDb) {
   `;
   
   const info = document.createElement('div');
-  const name = document.createElement('div');
+  info.style.display = 'flex';
+  info.style.flexDirection = 'column';
+  info.style.gap = '4px';
+  
+  const nameRow = document.createElement('div');
+  nameRow.style.display = 'flex';
+  nameRow.style.alignItems = 'center';
+  nameRow.style.gap = '8px';
+  nameRow.style.flexWrap = 'wrap';
+  
+  const name = document.createElement('span');
   name.style.cssText = 'font-weight: 600; font-size: 14.5px; color: var(--text-primary);';
   name.textContent = group.hymn_name;
-  info.appendChild(name);
+  nameRow.appendChild(name);
+  
+  if (category) {
+    const badge = document.createElement('span');
+    badge.className = `hymn-category-badge badge-${category.toLowerCase()}`;
+    let catLabel = category;
+    if (category === 'divya') catLabel = 'Divya';
+    else if (category === 'desika') catLabel = 'Desika';
+    else if (category === 'stotram') catLabel = 'Stotram';
+    badge.textContent = catLabel;
+    nameRow.appendChild(badge);
+  }
+  info.appendChild(nameRow);
   
   const details = document.createElement('div');
-  details.style.cssText = 'font-size: 12px; color: var(--text-secondary); margin-top: 3px;';
+  details.style.cssText = 'font-size: 12px; color: var(--text-secondary);';
   details.textContent = `${group.composer} • ${group.count} Verses`;
   info.appendChild(details);
   
   div.appendChild(info);
   
-  const icon = document.createElement('span');
-  icon.style.cssText = 'color: var(--accent-gold); font-size: 16px; font-weight: bold;';
-  icon.textContent = '→';
-  div.appendChild(icon);
+  const chevron = document.createElement('span');
+  chevron.style.cssText = 'color: var(--text-secondary); font-size: 18px; font-weight: 300; opacity: 0.5; padding-left: 8px;';
+  chevron.textContent = '›';
+  div.appendChild(chevron);
   
   div.addEventListener('click', () => {
     const hymnVerses = sourceDb.filter(v => v.hymn_id === group.hymn_id);
     loadVersesIntoReader(hymnVerses);
-  });
-  
-  div.addEventListener('mouseenter', () => {
-    div.style.background = 'rgba(217, 167, 74, 0.08)';
-    div.style.borderColor = 'var(--accent-gold)';
-    div.style.transform = 'translateY(-1px)';
-  });
-  div.addEventListener('mouseleave', () => {
-    div.style.background = 'rgba(255, 255, 255, 0.02)';
-    div.style.borderColor = 'var(--bg-card-border)';
-    div.style.transform = 'translateY(0)';
+    addToRecents(group.hymn_id);
   });
   
   return div;
