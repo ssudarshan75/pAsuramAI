@@ -611,32 +611,15 @@ function groupVersesByHymn(verses) {
 function createHymnIndexItem(group, sourceDb, category) {
   const div = document.createElement('div');
   div.className = 'hymn-index-item';
-  div.style.cssText = `
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 16px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--bg-card-border);
-    border-radius: 12px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  `;
   
   const info = document.createElement('div');
-  info.style.display = 'flex';
-  info.style.flexDirection = 'column';
-  info.style.gap = '4px';
+  info.className = 'hymn-info';
   
   const nameRow = document.createElement('div');
-  nameRow.style.display = 'flex';
-  nameRow.style.alignItems = 'center';
-  nameRow.style.gap = '8px';
-  nameRow.style.flexWrap = 'wrap';
+  nameRow.className = 'hymn-name-row';
   
   const name = document.createElement('span');
-  name.style.cssText = 'font-weight: 600; font-size: 14.5px; color: var(--text-primary);';
+  name.className = 'hymn-name';
   name.textContent = group.hymn_name;
   nameRow.appendChild(name);
   
@@ -653,14 +636,14 @@ function createHymnIndexItem(group, sourceDb, category) {
   info.appendChild(nameRow);
   
   const details = document.createElement('div');
-  details.style.cssText = 'font-size: 12px; color: var(--text-secondary);';
+  details.className = 'hymn-details';
   details.textContent = `${group.composer} • ${group.count} Verses`;
   info.appendChild(details);
   
   div.appendChild(info);
   
   const chevron = document.createElement('span');
-  chevron.style.cssText = 'color: var(--text-secondary); font-size: 18px; font-weight: 300; opacity: 0.5; padding-left: 8px;';
+  chevron.className = 'hymn-chevron';
   chevron.textContent = '›';
   div.appendChild(chevron);
   
