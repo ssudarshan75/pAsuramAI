@@ -103,8 +103,8 @@ body {
 .switch {
   position: relative;
   display: inline-block;
-  width: 44px;
-  height: 24px;
+  width: 51px;
+  height: 31px;
 }
 
 .switch input {
@@ -120,36 +120,33 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #334155;
-  transition: .2s;
+  background-color: rgba(120, 120, 128, 0.3);
+  transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 31px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
+  height: 27px;
+  width: 27px;
+  left: 2px;
+  bottom: 2px;
   background-color: white;
-  transition: .2s;
+  transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 3px 1px rgba(0, 0, 0, 0.06);
 }
 
 input:checked + .slider {
-  background-color: var(--accent-gold);
+  background-color: #34c759;
 }
 
 input:checked + .slider:before {
   transform: translateX(20px);
 }
 
-.slider.round {
-  border-radius: 34px;
-}
 
-.slider.round:before {
-  border-radius: 50%;
-}
 
 /* Chat container */
 .chat-container {
@@ -1425,66 +1422,108 @@ body.theme-ivory .chat-input-bar input {
 
 .setting-options-row {
   display: flex;
-  gap: 8px;
+  background: rgba(120, 120, 128, 0.16);
+  border-radius: 9px;
+  padding: 2px;
+  border: none;
 }
 
 .setting-options-row button {
   flex: 1;
-  padding: 12px 10px;
-  background: rgba(17, 24, 39, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 12px;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
   color: var(--text-primary);
   font-family: inherit;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.1, 0.76, 0.55, 0.94);
+  transition: all 0.25s cubic-bezier(0.1, 0.76, 0.55, 0.94);
 }
 
 .setting-options-row button:active {
-  transform: scale(0.96);
+  opacity: 0.8;
 }
 
 .setting-options-row button.active {
-  background: var(--accent-gold-glow);
-  border-color: var(--accent-gold);
+  background: rgba(255, 255, 255, 0.12);
   color: var(--accent-gold);
   font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-ivory .setting-options-row {
+  background: rgba(120, 120, 128, 0.1);
+}
+
+body.theme-ivory .setting-options-row button.active {
+  background: #ffffff;
+  color: var(--accent-gold);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .theme-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(17, 24, 39, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+body.theme-ivory .theme-grid {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .theme-btn {
   padding: 14px 16px;
-  background: rgba(17, 24, 39, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   color: var(--text-primary);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: all 0.2s cubic-bezier(0.1, 0.76, 0.55, 0.94);
+  transition: background 0.15s ease;
+  width: 100%;
+}
+
+.theme-btn:last-child {
+  border-bottom: none;
 }
 
 .theme-btn:active {
-  transform: scale(0.97);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+body.theme-ivory .theme-btn:active {
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .theme-btn.active {
-  background: var(--accent-gold-glow);
-  border-color: var(--accent-gold);
   color: var(--accent-gold);
   font-weight: 600;
+}
+
+/* Custom left alignment wrapper inside theme row to make justify-content space-between work */
+.theme-btn {
+  justify-content: flex-start; /* default */
+}
+
+/* Add iOS native checkmark dynamically to the active row */
+.theme-btn.active::after {
+  content: "✓";
+  margin-left: auto;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent-gold);
 }
 
 .theme-dot {
@@ -1492,6 +1531,7 @@ body.theme-ivory .chat-input-bar input {
   height: 12px;
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .dot-midnight {
