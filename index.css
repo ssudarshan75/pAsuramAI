@@ -554,7 +554,7 @@ input:checked + .slider:before {
 .reader-content {
   flex: 1;
   overflow-y: auto;
-  padding: calc(85px + var(--safe-top)) 20px calc(40px + var(--safe-bottom)) 20px;
+  padding: calc(115px + var(--safe-top)) 20px calc(40px + var(--safe-bottom)) 20px;
   transition: padding-top 0.35s cubic-bezier(0.1, 0.76, 0.55, 0.94);
 }
 
@@ -1334,23 +1334,8 @@ body.theme-ivory .chat-input-bar input {
   letter-spacing: 0.2px;
 }
 
-/* 2-Column Landscape Split (Book View) */
+/* Landscape Layout Overrides */
 @media (orientation: landscape) {
-  .verses-list {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 16px 24px !important;
-    padding: 16px !important;
-  }
-
-  .verse-card {
-    border-bottom: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.04) !important;
-    border-radius: 16px !important;
-    background: rgba(17, 24, 39, 0.4) !important;
-    padding: 20px 16px !important;
-  }
-  
   .hymn-list-container {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
