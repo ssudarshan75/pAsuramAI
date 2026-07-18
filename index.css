@@ -8,7 +8,7 @@
   --text-secondary: #94a3b8;
   --ios-blue: #007aff;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-top: env(safe-area-inset-top, 44px);
 }
 
 /* Forest Theme Override */
