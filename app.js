@@ -21,17 +21,22 @@ const loadMoreContainer = document.getElementById('load-more-container');
 const loadMoreBtn = document.getElementById('load-more-btn');
 
 // New iOS Tab View Elements
+const tabViewHome = document.getElementById('tabview-home');
 const tabViewScriptures = document.getElementById('tabview-scriptures');
 const tabViewComposers = document.getElementById('tabview-composers');
-const tabViewMyHymns = document.getElementById('tabview-myhymns');
 const tabViewChat = document.getElementById('tabview-chat');
 const tabViewSettings = document.getElementById('tabview-settings');
 
+const tabBtnHome = document.getElementById('tab-home');
 const tabBtnScriptures = document.getElementById('tab-scriptures');
 const tabBtnComposers = document.getElementById('tab-composers');
-const tabBtnMyHymns = document.getElementById('tab-myhymns');
 const tabBtnChat = document.getElementById('tab-chat');
 const tabBtnSettings = document.getElementById('tab-settings');
+
+// Home Dashboard Elements
+const homeRecentsList = document.getElementById('home-recents-list');
+const homeFavoritesList = document.getElementById('home-favorites-list');
+const homeSearchTrigger = document.getElementById('home-search-bar-trigger');
 
 // Flat list search and filters
 const scriptureSearchInput = document.getElementById('scripture-search-input');
@@ -147,11 +152,13 @@ const bottomTabBar = document.querySelector('.bottom-tab-bar');
 function handleTabBarScroll(e) {
   const scrollTop = e.target.scrollTop || document.documentElement.scrollTop;
   const searchHeader = document.querySelector('.search-header-bar');
+  const isReaderOpen = readerPanel && readerPanel.classList.contains('open');
+  
   if (scrollTop > lastScrollTop && scrollTop > 40) {
     if (bottomTabBar) bottomTabBar.classList.add('tab-bar-hidden');
     if (searchHeader) searchHeader.classList.add('header-hidden');
   } else if (scrollTop < lastScrollTop) {
-    if (bottomTabBar) bottomTabBar.classList.remove('tab-bar-hidden');
+    if (bottomTabBar && !isReaderOpen) bottomTabBar.classList.remove('tab-bar-hidden');
     if (searchHeader) searchHeader.classList.remove('header-hidden');
   }
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
@@ -179,28 +186,21 @@ document.querySelectorAll('.filter-pill').forEach(pill => {
   });
 });
 
-// Segment Toggle Listeners (My Hymns Tab)
-if (segmentBtnFavs && segmentBtnRecents) {
-  segmentBtnFavs.addEventListener('click', () => {
-    segmentBtnFavs.classList.add('active');
-    segmentBtnRecents.classList.remove('active');
-    favoritesSection.classList.remove('hidden');
-    recentsSection.classList.add('hidden');
-  });
-  
-  segmentBtnRecents.addEventListener('click', () => {
-    segmentBtnRecents.classList.add('active');
-    segmentBtnFavs.classList.remove('active');
-    recentsSection.classList.remove('hidden');
-    favoritesSection.classList.add('hidden');
+// Home Search Bar Trigger
+if (homeSearchTrigger) {
+  homeSearchTrigger.addEventListener('click', () => {
+    if (tabBtnScriptures) tabBtnScriptures.click();
+    setTimeout(() => {
+      if (scriptureSearchInput) scriptureSearchInput.focus();
+    }, 150);
   });
 }
 
 // Bottom Tab Bar Routing
 const tabs = [
+  { btn: tabBtnHome, view: tabViewHome },
   { btn: tabBtnScriptures, view: tabViewScriptures },
   { btn: tabBtnComposers, view: tabViewComposers },
-  { btn: tabBtnMyHymns, view: tabViewMyHymns },
   { btn: tabBtnChat, view: tabViewChat },
   { btn: tabBtnSettings, view: tabViewSettings }
 ];
@@ -216,9 +216,9 @@ tabs.forEach(tab => {
       
       if (bottomTabBar) bottomTabBar.classList.remove('tab-bar-hidden');
       
-      if (tab.view === tabViewMyHymns) {
-        renderFavoritesList();
-        renderRecentsList();
+      if (tab.view === tabViewHome) {
+        renderHomeFavorites();
+        renderHomeRecents();
       } else if (tab.view === tabViewComposers) {
         renderComposersView();
       }
@@ -229,7 +229,19 @@ tabs.forEach(tab => {
 if (closeReaderBtn) {
   closeReaderBtn.addEventListener('click', () => {
     readerPanel.classList.remove('open');
+    readerPanel.classList.remove('header-tucked');
     if (bottomTabBar) bottomTabBar.classList.remove('tab-bar-hidden');
+  });
+}
+
+const readerContent = document.getElementById('reader-content');
+if (readerContent) {
+  readerContent.addEventListener('click', (e) => {
+    // Prevent toggling if user clicks a button, a badge, a word pill, or language pills
+    if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.word-pill') || e.target.closest('.lang-selector-pill')) {
+      return;
+    }
+    readerPanel.classList.toggle('header-tucked');
   });
 }
 
@@ -240,7 +252,7 @@ if (loadMoreBtn) {
 }
 
 function switchTab(targetView) {
-  [tabViewScriptures, tabViewComposers, tabViewMyHymns, tabViewChat, tabViewSettings].forEach(view => {
+  [tabViewHome, tabViewScriptures, tabViewComposers, tabViewChat, tabViewSettings].forEach(view => {
     if (view) view.classList.add('hidden');
   });
   if (targetView) targetView.classList.remove('hidden');
@@ -390,23 +402,20 @@ function updateFavoriteButtonState(hymnId) {
   }
 }
 
-function renderFavoritesList() {
-  if (!favoritesList) return;
-  favoritesList.innerHTML = '';
+function renderHomeFavorites() {
+  if (!homeFavoritesList) return;
+  homeFavoritesList.innerHTML = '';
   
-  const emptyMsg = document.getElementById('favorites-empty-msg');
-  
+  const favSection = document.getElementById('home-favorites-section');
   if (favorites.length === 0) {
-    if (emptyMsg) emptyMsg.classList.remove('hidden');
+    if (favSection) favSection.style.display = 'none';
     return;
   }
-  
-  if (emptyMsg) emptyMsg.classList.add('hidden');
+  if (favSection) favSection.style.display = 'block';
   
   const favGroups = allHymnsCached.filter(g => favorites.includes(g.hymn_id));
-  
   favGroups.forEach(group => {
-    favoritesList.appendChild(createHymnIndexItem(group, group.db, group.category));
+    homeFavoritesList.appendChild(createHorizontalHymnCard(group));
   });
 }
 
@@ -423,25 +432,51 @@ function addToRecents(hymnId) {
   localStorage.setItem('recents', JSON.stringify(recents));
 }
 
-function renderRecentsList() {
-  if (!recentsList) return;
-  recentsList.innerHTML = '';
+function renderHomeRecents() {
+  if (!homeRecentsList) return;
+  homeRecentsList.innerHTML = '';
   
-  const emptyMsg = document.getElementById('recents-empty-msg');
-  
+  const recentsSection = document.getElementById('home-recents-section');
   if (recents.length === 0) {
-    if (emptyMsg) emptyMsg.classList.remove('hidden');
+    if (recentsSection) recentsSection.style.display = 'none';
     return;
   }
-  
-  if (emptyMsg) emptyMsg.classList.add('hidden');
+  if (recentsSection) recentsSection.style.display = 'block';
   
   recents.forEach(recId => {
     const group = allHymnsCached.find(g => g.hymn_id === recId);
     if (group) {
-      recentsList.appendChild(createHymnIndexItem(group, group.db, group.category));
+      homeRecentsList.appendChild(createHorizontalHymnCard(group));
     }
   });
+}
+
+function createHorizontalHymnCard(group) {
+  const card = document.createElement('div');
+  card.className = 'horizontal-hymn-card';
+  
+  const icon = document.createElement('div');
+  icon.className = 'card-icon-badge';
+  icon.textContent = '📚';
+  card.appendChild(icon);
+  
+  const title = document.createElement('div');
+  title.className = 'card-title-text';
+  title.textContent = group.hymn_name;
+  card.appendChild(title);
+  
+  const sub = document.createElement('div');
+  sub.className = 'card-subtitle-text';
+  sub.textContent = 'Continue Reading';
+  card.appendChild(sub);
+  
+  card.addEventListener('click', () => {
+    const hymnVerses = group.db.filter(v => v.hymn_id === group.hymn_id);
+    loadVersesIntoReader(hymnVerses);
+    addToRecents(group.hymn_id);
+  });
+  
+  return card;
 }
 
 // ----------------------------------------------------
@@ -510,8 +545,8 @@ async function initLocalDatabase() {
     
     console.log(`Local DB loaded: ${dbDivya.length} Divya, ${dbDesika.length} Desika, ${dbStotrams.length} Stotrams.`);
     renderFlatScriptures();
-    renderFavoritesList();
-    renderRecentsList();
+    renderHomeFavorites();
+    renderHomeRecents();
   } catch (err) {
     console.error("Failed to load local database files:", err);
   }
